@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="SkillX — AI-driven resume screening and comprehensive skill gap analysis to build the perfect career roadmap.">
+  <title>SkillX | Resume Screening & Skill Gap Analyzer</title>
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="light-theme">
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+    </div>
+    <ul class="nav-links nav-pill-container">
+      <li><a href="#welcome" class="nav-item active">Home</a></li>
+      <li><a href="#about" class="nav-item">About Us</a></li>
+      <li><a href="#what-we-do" class="nav-item">What We Do</a></li>
+    </ul>
+    <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+      <button class="btn-gradient-border" onclick="window.location.href='login.html'">Login</button>
+      <button class="btn-gradient-border" onclick="window.location.href='register.html'">Sign Up</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section id="welcome" class="lumina-hero">
+      <div class="lumina-hero-content">
+        <h1 class="lumina-hero-title">
+          Intelligence That<br>
+          Flows With You
+        </h1>
+        <p class="lumina-hero-description">
+          AI-driven resume screening and comprehensive skill gap analysis<br>
+          to build the perfect career roadmap.
+        </p>
+        <!-- <div class="lumina-hero-actions">
+          <button class="lumina-cta-primary" onclick="window.location.href='login.html'">
+            <span class="lumina-cta-icon">✦</span>
+            Start Building with AI
+          </button>
+          <button class="lumina-cta-ghost" onclick="window.location.href='register.html'">
+            Sign Up Free
+          </button>
+        </div> -->
+        <div class="lumina-hero-stats">
+          <div class="lumina-stat-box">
+            <h3>98%</h3>
+            <p>Screening Accuracy</p>
+          </div>
+          <div class="lumina-stat-box">
+            <h3>10x</h3>
+            <p>Faster Hiring</p>
+          </div>
+          <div class="lumina-stat-box">
+            <h3>2M+</h3>
+            <p>Skills Analyzed</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wave Canvas -->
+      <canvas id="wave-canvas"></canvas>
+
+      <!-- Trust Bar -->
+      <div class="lumina-trust-bar">
+        <p class="lumina-trust-label"></p>
+        <div class="lumina-trust-logos">
+          <span class="lumina-trust-logo"></span>
+          <span class="lumina-trust-logo"></span>
+          <span class="lumina-trust-logo"></span>
+          <span class="lumina-trust-logo"></span>
+          <span class="lumina-trust-logo"></span>
+          <span class="lumina-trust-logo"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about-section scroll-fade">
+      <div class="section-badge scroll-reveal scroll-reveal-up" style="--reveal-delay: 0s;">Discover</div>
+      <h2 class="section-title scroll-reveal scroll-reveal-up" style="--reveal-delay: 0.1s;">About Us</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="scroll-reveal scroll-reveal-left" style="--reveal-delay: 0.2s;">At <strong>SkillX</strong>, we believe the hiring process should be transparent,
+            data-driven, and focused on genuine capabilities rather than just keywords. </p>
+          <p class="scroll-reveal scroll-reveal-left" style="--reveal-delay: 0.3s;">Our platform was forged by leading HR tech experts and AI researchers to completely eliminate
+            bias while providing actionable feedback to candidates and perfect matches to employers.</p>
+          <ul class="about-list">
+            <li class="scroll-reveal scroll-reveal-left" style="--reveal-delay: 0.4s;"><i class="fa-solid fa-check-circle"></i> AI-Powered Candidate Matching</li>
+            <li class="scroll-reveal scroll-reveal-left" style="--reveal-delay: 0.5s;"><i class="fa-solid fa-check-circle"></i> Detailed Candidate Roadmaps</li>
+            <li class="scroll-reveal scroll-reveal-left" style="--reveal-delay: 0.6s;"><i class="fa-solid fa-check-circle"></i> Objective Skill Calibration</li>
+          </ul>
+        </div>
+        <div class="about-image-container glassmorphism scroll-reveal scroll-reveal-right" style="--reveal-delay: 0.35s;">
+          <div class="image-overlay">
+            <i class="fa-solid fa-bullseye glow-icon"></i>
+            <h3>Our Mission</h3>
+            <p>To align global talent with the right opportunities through unbiased analysis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What We Do Section -->
+    <section id="what-we-do" class="services-section scroll-fade">
+      <div class="section-badge scroll-reveal scroll-reveal-up" style="--reveal-delay: 0s;">Features</div>
+      <h2 class="section-title scroll-reveal scroll-reveal-up" style="--reveal-delay: 0.1s;">What We Do</h2>
+      <p class="section-subtitle scroll-reveal scroll-reveal-up" style="--reveal-delay: 0.2s;">A comprehensive suite of tools designed to optimize careers and hiring.</p>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="service-card glassmorphism hover-lift scroll-reveal scroll-reveal-up" style="--reveal-delay: 0.15s;">
+          <div class="service-icon-wrapper">
+            <i class="fa-solid fa-file-contract"></i>
+          </div>
+          <h3>Resume Screening</h3>
+          <p>Instantly parse and evaluate resumes against thousands of job descriptions using contextual AI.
+            No more keyword stuffing—just real skills.</p>
+        </div>
+        <!-- Service 2 -->
+        <div class="service-card glassmorphism hover-lift scroll-reveal scroll-reveal-up" style="--reveal-delay: 0.3s;">
+          <div class="service-icon-wrapper">
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+          </div>
+          <h3>Skill Gap Analysis</h3>
+          <p>Compare your current repertoire against market demands. We tell you exactly what you're lacking
+            to nail your dream job.</p>
+        </div>
+        <!-- Service 3 -->
+        <div class="service-card glassmorphism hover-lift scroll-reveal scroll-reveal-up" style="--reveal-delay: 0.45s;">
+          <div class="service-icon-wrapper">
+            <i class="fa-solid fa-road"></i>
+          </div>
+          <h3>Personalized Roadmaps</h3>
+          <p>Based on your skill gap, receive an actionable roadmap consisting of specific courses (BCA,
+            BTech, Bsc, etc.), projects, and internships.</p>
+        </div>
+        <!-- Service 4 -->
+        <div class="service-card glassmorphism hover-lift scroll-reveal scroll-reveal-up" style="--reveal-delay: 0.6s;">
+          <div class="service-icon-wrapper">
+            <i class="fa-solid fa-table-columns"></i>
+          </div>
+          <h3>Role-based Dashboards</h3>
+          <p>Dedicated portals for Recruiters to view analytics and manage users, and for Users to track their
+            progress, analyze themselves, and get feedback.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3><i class="fa-solid fa-chart-pie"></i> SkillX</h3>
+        <p>Empowering the workforce of tomorrow.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Platform</h4>
+        <a href="login.html">Login</a>
+        <a href="#about">About</a>
+        <a href="#what-we-do">Features</a>
+      </div>
+      <div class="footer-social">
+        <h4>Connect</h4>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 SkillX System. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- Frosted-Glass Mountain Wave Renderer v7 FINAL -->
+  <script>
+    (function () {
+      'use strict';
+
+      const canvas = document.getElementById('wave-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let W, H, time = 0;
+      let mouse = { x: 0.5, y: 0.5 };
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = canvas.clientWidth;
+        H = canvas.clientHeight;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      window.addEventListener('mousemove', function (e) {
+        mouse.x = e.clientX / window.innerWidth;
+        mouse.y = e.clientY / window.innerHeight;
+      });
+
+      var WATER_LINE = 0.80;
+
+      var layers = [
+        {
+          ampRatio: 0.21, freq: 0.0003, speed: 0.008, yBase: 0.82, phase: 1.0,
+          peakOffset: 0.40, skewL: 0.40, skewR: 0.55, liftL: -0.20, liftR: -0.20,
+          lightColor: [255, 250, 245], darkColor: [250, 230, 215],
+          opacity: 0.03, edgeWidth: 1.5, edgeOpacity: 0.15, edgeBlur: 10,
+          gloss: 0.0, glossH: 50,
+        },
+        {
+          ampRatio: 0.26, freq: 0.0004, speed: 0.012, yBase: 0.82, phase: 4.0,
+          peakOffset: 0.60, skewL: 0.50, skewR: 0.45, liftL: -0.15, liftR: -0.15,
+          lightColor: [255, 250, 245], darkColor: [250, 230, 215],
+          opacity: 0.05, edgeWidth: 2.0, edgeOpacity: 0.25, edgeBlur: 8,
+          gloss: 0.05, glossH: 60,
+        },
+        {
+          ampRatio: 0.25, freq: 0.0005, speed: 0.018, yBase: 0.82, phase: 2.5,
+          peakOffset: 0.50, skewL: 0.50, skewR: 0.50, liftL: -0.10, liftR: -0.10,
+          lightColor: [255, 235, 200], darkColor: [240, 190, 130],
+          opacity: 0.15, edgeWidth: 2.0, edgeOpacity: 0.75, edgeBlur: 6,
+          gloss: 0.10, glossH: 65,
+        },
+        {
+          ampRatio: 0.26, freq: 0.00060, speed: 0.025, yBase: 0.82, phase: 6.2,
+          peakOffset: 0.53, skewL: 0.50, skewR: 0.50, liftL: 0.12, liftR: 0.08,
+          lightColor: [255, 200, 120], darkColor: [230, 160, 65],
+          opacity: 0.25, edgeWidth: 2.0, edgeOpacity: 0.80, edgeBlur: 6,
+          gloss: 0.15, glossH: 60,
+        },
+        {
+          ampRatio: 0.26, freq: 0.00080, speed: 0.032, yBase: 0.83, phase: 1.5,
+          peakOffset: 0.50, skewL: 0.45, skewR: 0.50, liftL: 0.08, liftR: 0.12,
+          lightColor: [248, 175, 75], darkColor: [220, 130, 40],
+          opacity: 0.45, edgeWidth: 1.5, edgeOpacity: 0.90, edgeBlur: 4,
+          gloss: 0.20, glossH: 45,
+        },
+        {
+          ampRatio: 0.23, freq: 0.0011, speed: 0.042, yBase: 0.84, phase: 4.5,
+          peakOffset: 0.47, skewL: 0.50, skewR: 0.50, liftL: 0.10, liftR: 0.08,
+          lightColor: [242, 148, 55], darkColor: [215, 95, 25],
+          opacity: 0.70, edgeWidth: 1.2, edgeOpacity: 0.95, edgeBlur: 2,
+          gloss: 0.25, glossH: 40,
+        },
+        {
+          ampRatio: 0.21, freq: 0.0014, speed: 0.055, yBase: 0.85, phase: 7.2,
+          peakOffset: 0.55, skewL: 0.45, skewR: 0.45, liftL: 0.08, liftR: 0.08,
+          lightColor: [230, 90, 40], darkColor: [195, 50, 15],
+          opacity: 0.92, edgeWidth: 1.0, edgeOpacity: 1.0, edgeBlur: 0,
+          gloss: 0.30, glossH: 30,
+        },
+      ];
+
+      function updateAmps() {
+        for (var i = 0; i < layers.length; i++) {
+          layers[i].amp = H * layers[i].ampRatio;
+        }
+      }
+      window.addEventListener('resize', function () { resize(); updateAmps(); });
+      updateAmps();
+
+      function waveY(x, L, t) {
+        var base = H * L.yBase;
+        var mx = (mouse.x - 0.5) * 6;
+        var nx = x / W;
+        var po = L.peakOffset || 0.5;
+        var sl = L.skewL || 0.5;
+        var sr = L.skewR || 0.5;
+        var dx = nx - po;
+        var denom = (dx < 0) ? sl : sr;
+        var envelope = Math.exp(-Math.pow(dx / denom, 2));
+        var leftLift = L.liftL !== undefined ? L.liftL : 0.2;
+        var rightLift = L.liftR !== undefined ? L.liftR : 0.2;
+        var baseLift = (1 - nx) * leftLift + nx * rightLift;
+        envelope = envelope * 0.75 + baseLift;
+        var s1 = Math.sin(x * L.freq + t * L.speed + L.phase);
+        var s2 = Math.sin(x * L.freq * 0.4 + t * L.speed * 0.5 + L.phase * 1.5);
+        var s3 = Math.sin(x * L.freq * 2.1 + t * L.speed * 0.6 + L.phase * 0.8);
+        var mainWave = s1 * 0.65 + s2 * 0.25 + s3 * 0.10;
+        return (
+          base -
+          L.amp * envelope -
+          L.amp * 0.25 * mainWave * envelope +
+          mx * Math.sin(x * 0.003 + t * 0.02)
+        );
+      }
+
+      function buildPath(L, t) {
+        var pts = [];
+        for (var x = -30; x <= W + 30; x += 3) {
+          pts.push({ x: x, y: waveY(x, L, t) });
+        }
+        return pts;
+      }
+
+      function traceCurve(pts) {
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (var i = 1; i < pts.length - 1; i++) {
+          var cx = (pts[i].x + pts[i + 1].x) / 2;
+          var cy = (pts[i].y + pts[i + 1].y) / 2;
+          ctx.quadraticCurveTo(pts[i].x, pts[i].y, cx, cy);
+        }
+        ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
+      }
+
+      function drawWave(L, t) {
+        var pts = buildPath(L, t);
+        var waterY = H * WATER_LINE;
+        var lr = L.lightColor[0], lg = L.lightColor[1], lb = L.lightColor[2];
+        var dr = L.darkColor[0], dg = L.darkColor[1], db = L.darkColor[2];
+
+        var minY = Infinity;
+        for (var i = 0; i < pts.length; i++) {
+          if (pts[i].y < minY) minY = pts[i].y;
+        }
+
+        ctx.save();
+        ctx.beginPath();
+        traceCurve(pts);
+        ctx.lineTo(W + 30, waterY);
+        ctx.lineTo(-30, waterY);
+        ctx.closePath();
+
+        var bodyOp = Math.max(0.40, L.opacity * 0.90);
+        var gf = ctx.createLinearGradient(0, minY, 0, waterY);
+        var topR = Math.min(255, lr + 45), topG = Math.min(255, lg + 40), topB = Math.min(255, lb + 30);
+        gf.addColorStop(0, 'rgba(' + topR + ',' + topG + ',' + topB + ',' + bodyOp + ')');
+        gf.addColorStop(0.4, 'rgba(' + lr + ',' + lg + ',' + lb + ',' + (bodyOp * 0.95) + ')');
+        gf.addColorStop(1, 'rgba(' + dr + ',' + dg + ',' + db + ',' + (bodyOp * 0.70) + ')');
+        ctx.fillStyle = gf;
+        ctx.fill();
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath(); traceCurve(pts);
+        ctx.lineTo(W + 30, waterY); ctx.lineTo(-30, waterY); ctx.closePath();
+        ctx.clip();
+        var shade = ctx.createLinearGradient(0, minY, W * 0.6, waterY);
+        shade.addColorStop(0, 'rgba(255, 245, 230, 0.06)');
+        shade.addColorStop(1, 'rgba(0, 0, 0, 0.04)');
+        ctx.fillStyle = shade;
+        ctx.fill();
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath();
+        traceCurve(pts);
+        for (var i = pts.length - 1; i >= 0; i--) {
+          ctx.lineTo(pts[i].x, pts[i].y + L.glossH);
+        }
+        ctx.closePath();
+        var gg = ctx.createLinearGradient(0, minY, 0, minY + L.glossH);
+        gg.addColorStop(0, 'rgba(255,255,255,' + L.gloss + ')');
+        gg.addColorStop(0.3, 'rgba(255,255,255,' + (L.gloss * 0.5) + ')');
+        gg.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = gg;
+        ctx.fill();
+        ctx.restore();
+
+        if (L.edgeBlur > 0) {
+          ctx.save();
+          ctx.beginPath();
+          traceCurve(pts);
+          ctx.strokeStyle = 'rgba(255, 255, 255, ' + (L.edgeOpacity * 0.5) + ')';
+          ctx.lineWidth = L.edgeWidth * 1.5;
+          ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+          ctx.shadowBlur = L.edgeBlur * 2;
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        ctx.save();
+        ctx.beginPath();
+        traceCurve(pts);
+        ctx.strokeStyle = 'rgba(255, 255, 255, ' + L.edgeOpacity + ')';
+        ctx.lineWidth = L.edgeWidth;
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(0, 6);
+        ctx.beginPath();
+        traceCurve(pts);
+        ctx.lineWidth = 12;
+        ctx.strokeStyle = 'rgba(100, 40, 8, 0.08)';
+        ctx.filter = 'blur(4px)';
+        ctx.stroke();
+        ctx.filter = 'none';
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(-30, waterY, W + 60, H - waterY + 10);
+        ctx.clip();
+
+        var mirrorPts = [];
+        for (var i = 0; i < pts.length; i++) {
+          mirrorPts.push({ x: pts[i].x, y: waterY + (waterY - pts[i].y) * 0.45 });
+        }
+
+        ctx.beginPath();
+        traceCurve(mirrorPts);
+        ctx.lineTo(W + 30, H + 10);
+        ctx.lineTo(-30, H + 10);
+        ctx.closePath();
+
+        var maxMY = 0;
+        for (var i = 0; i < mirrorPts.length; i++) {
+          if (mirrorPts[i].y > maxMY) maxMY = mirrorPts[i].y;
+        }
+
+        var gradM = ctx.createLinearGradient(0, waterY, 0, Math.min(maxMY, H));
+        var rr = Math.floor(dr * 0.45 + 230 * 0.55);
+        var ggCol = Math.floor(dg * 0.45 + 180 * 0.55);
+        var bb = Math.floor(db * 0.45 + 195 * 0.55);
+        var refOp = Math.max(0.15, L.opacity * 0.45);
+        gradM.addColorStop(0.00, 'rgba(' + rr + ',' + ggCol + ',' + bb + ', 0.1)');
+        gradM.addColorStop(0.30, 'rgba(' + rr + ',' + ggCol + ',' + bb + ',' + refOp + ')');
+        gradM.addColorStop(0.70, 'rgba(' + rr + ',' + ggCol + ',' + bb + ',' + (refOp * 0.4) + ')');
+        gradM.addColorStop(1.00, 'rgba(' + rr + ',' + ggCol + ',' + bb + ', 0.0)');
+        ctx.fillStyle = gradM;
+        ctx.fill();
+
+        if (L.opacity > 0.1) {
+          ctx.beginPath();
+          traceCurve(mirrorPts);
+          ctx.strokeStyle = 'rgba(255, 240, 245, ' + (L.edgeOpacity * 0.15) + ')';
+          ctx.lineWidth = 1.0;
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+
+      function animate() {
+        time += 0.6;
+        ctx.clearRect(0, 0, W, H);
+
+        var waterY = H * WATER_LINE;
+
+        var bgBase = ctx.createLinearGradient(0, waterY, 0, H);
+        bgBase.addColorStop(0, '#f5e4e1');
+        bgBase.addColorStop(0.4, '#eac6c3');
+        bgBase.addColorStop(1, '#dcb8bc');
+        ctx.fillStyle = bgBase;
+        ctx.fillRect(0, waterY, W, H - waterY);
+
+        var horizon = ctx.createLinearGradient(0, waterY - 35, 0, waterY + 35);
+        horizon.addColorStop(0.0, 'rgba(255, 200, 100, 0.0)');
+        horizon.addColorStop(0.45, 'rgba(255, 190, 80, 0.6)');
+        horizon.addColorStop(0.50, 'rgba(255, 210, 100, 0.85)');
+        horizon.addColorStop(0.55, 'rgba(255, 180, 70, 0.5)');
+        horizon.addColorStop(1.0, 'rgba(255, 140, 50, 0.0)');
+        ctx.fillStyle = horizon;
+        ctx.fillRect(0, waterY - 35, W, 70);
+
+        ctx.save();
+        for (var i = 0; i < 4; i++) {
+          var shY = waterY + 20 + i * 25;
+          ctx.beginPath();
+          for (var sx = -20; sx <= W + 20; sx += 15) {
+            var sy = shY + Math.sin(sx * 0.005 + time * 0.015 + i) * 6;
+            sx === -20 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
+          }
+          ctx.strokeStyle = 'rgba(255, 210, 170, ' + (0.15 - i * 0.03) + ')';
+          ctx.lineWidth = 2.0;
+          ctx.filter = 'blur(1px)';
+          ctx.stroke();
+
+          ctx.beginPath();
+          for (var sx2 = -20; sx2 <= W + 20; sx2 += 15) {
+            var sy2 = shY + Math.sin(sx2 * 0.005 + time * 0.015 + i) * 6;
+            sx2 === -20 ? ctx.moveTo(sx2, sy2) : ctx.lineTo(sx2, sy2);
+          }
+          ctx.strokeStyle = 'rgba(255, 245, 230, ' + (0.25 - i * 0.05) + ')';
+          ctx.lineWidth = 0.8;
+          ctx.filter = 'none';
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        for (var k = 0; k < layers.length; k++) {
+          drawWave(layers[k], time);
+        }
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    })();
+  </script>
+</body>
+
+</html>

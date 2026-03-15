@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | Recruiter Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            padding: 8rem 5% 4rem;
+            min-height: 100vh;
+        }
+
+        .dash-header {
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-3"></div>
+
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='recruiter-dashboard.html'" style="cursor:pointer;">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-solid"
+                onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                Logout <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="dash-header fade-in-up">
+            <span class="badge"
+                style="background: rgba(216, 95, 36, 0.1); color: #d85f24; border-color: rgba(216, 95, 36, 0.2);">System
+                Administrator</span>
+            <h1 class="main-title">Recruiter <span>Dashboard</span></h1>
+            <p class="subtitle">Overview platform metrics, manage users, and view hiring analytics.</p>
+        </div>
+
+        <div class="services-grid fade-in-up delay-1">
+            <div class="service-card glassmorphism hover-lift">
+                <div class="service-icon-wrapper"><i class="fa-solid fa-users"></i></div>
+                <h3>Manage Users</h3>
+                <p>View all active users, their roles, and system permissions.</p>
+            </div>
+            <div class="service-card glassmorphism hover-lift">
+                <div class="service-icon-wrapper"><i class="fa-solid fa-chart-column"></i></div>
+                <h3>System Analytics</h3>
+                <p>See real-time stats like resumes processed and skill gaps identified.</p>
+            </div>
+            <div class="service-card glassmorphism hover-lift">
+                <div class="service-icon-wrapper"><i class="fa-solid fa-building"></i></div>
+                <h3>Company Portal</h3>
+                <p>Manage job descriptions submitted by hiring companies.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

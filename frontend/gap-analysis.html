@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | Gap Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        .analysis-page {
+            padding: 7rem 5% 4rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .page-header .breadcrumb a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .page-header .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Input Section */
+        .gap-input-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .gap-input-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-card {
+            padding: 2rem;
+        }
+
+        .input-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-card h3 i {
+            color: var(--primary-light);
+        }
+
+        .input-card p.desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-row {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-row label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-row input,
+        .form-row select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+        }
+
+        .form-row select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%2394a3b8'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .form-row select option {
+            background: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        .form-row input:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: var(--input-bg-focus);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Skills Tags Input */
+        .skills-tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.7rem;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            min-height: 52px;
+            align-items: center;
+            cursor: text;
+            transition: var(--transition-fast);
+        }
+
+        .skills-tag-container:focus-within {
+            border-color: var(--primary-light);
+            background: var(--input-bg-focus);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .skills-tag-container input {
+            flex: 1;
+            min-width: 80px;
+            border: none;
+            background: transparent;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            padding: 0.3rem 0.4rem;
+        }
+
+        .skill-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.75rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--primary-light);
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            animation: fadeInUp 0.3s ease forwards;
+        }
+
+        .skill-tag .remove-tag {
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .skill-tag .remove-tag:hover {
+            opacity: 1;
+        }
+
+        /* Slider Row */
+        .slider-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-row .slider-label {
+            min-width: 100px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .slider-row input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        .slider-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+        }
+
+        .slider-row .slider-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--primary-light);
+        }
+
+        .analyze-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results */
+        .results-section {
+            display: none;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .results-header h2 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .results-header h2 i {
+            color: var(--secondary);
+        }
+
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .score-card {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .score-card .score-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-card .score-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .score-card .score-icon {
+            font-size: 1.3rem;
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            padding: 2rem;
+        }
+
+        .chart-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-card h3 i {
+            color: var(--primary-light);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            max-height: 340px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Gap Detail Cards */
+        .gap-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .gap-detail-card {
+            padding: 1.5rem;
+        }
+
+        .gap-detail-card .gap-skill-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .gap-bar-track {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .gap-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gap-bar-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* Recommendations */
+        .reco-card {
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .reco-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .reco-card h3 i {
+            color: #fbbf24;
+        }
+
+        .reco-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            align-items: flex-start;
+        }
+
+        .reco-item:last-child {
+            border-bottom: none;
+        }
+
+        .reco-item i {
+            color: var(--secondary);
+            margin-top: 0.15rem;
+            flex-shrink: 0;
+        }
+
+        .reco-item span {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .reco-item .reco-priority {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .reco-priority.high {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .reco-priority.medium {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .reco-priority.low {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='user-dashboard.html'" style="cursor:pointer;">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-solid"
+                onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                Logout <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="analysis-page">
+        <!-- Header -->
+        <div class="page-header fade-in-up">
+            <div class="breadcrumb">
+                <a href="user-dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
+                <span>Gap Analysis</span>
+            </div>
+            <h1 class="main-title"><i class="fa-solid fa-chart-line" style="color:var(--primary-light);"></i> Gap
+                <span>Analysis</span>
+            </h1>
+            <p class="subtitle">Enter your current skills, proficiency levels, and target role to discover exactly where
+                your skill gaps are and how to close them.</p>
+        </div>
+
+        <!-- Input Section -->
+        <div class="gap-input-layout fade-in-up delay-1">
+            <!-- Left: Role & Skills Input -->
+            <div class="input-card glassmorphism">
+                <h3><i class="fa-solid fa-bullseye"></i> Target Role & Skills</h3>
+                <p class="desc">Choose or type your target role and add skills you currently have.</p>
+
+                <div class="form-row">
+                    <label for="targetRole">Target Role</label>
+                    <select id="targetRole">
+                        <option value="">— Select a target role —</option>
+                        <option value="frontend">Frontend Developer</option>
+                        <option value="backend">Backend Developer</option>
+                        <option value="fullstack">Full Stack Developer</option>
+                        <option value="data-scientist">Data Scientist</option>
+                        <option value="ml-engineer">ML Engineer</option>
+                        <option value="devops">DevOps Engineer</option>
+                        <option value="mobile">Mobile Developer</option>
+                        <option value="cybersecurity">Cybersecurity Analyst</option>
+                        <option value="ui-ux">UI/UX Designer</option>
+                        <option value="product-manager">Product Manager</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label>Your Skills <span style="color:var(--text-muted); font-weight:400; font-size:0.8rem;">(press
+                            Enter to add)</span></label>
+                    <div class="skills-tag-container" id="skillsTagContainer"
+                        onclick="document.getElementById('skillInput').focus()">
+                        <input type="text" id="skillInput" placeholder="Type a skill and press Enter...">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label for="experienceYears">Years of Experience</label>
+                    <input type="number" id="experienceYears" min="0" max="30" placeholder="e.g. 2" value="1">
+                </div>
+            </div>
+
+            <!-- Right: Proficiency Sliders -->
+            <div class="input-card glassmorphism">
+                <h3><i class="fa-solid fa-sliders"></i> Proficiency Levels</h3>
+                <p class="desc">Rate yourself on each skill you added (0–100). Sliders appear after adding skills.</p>
+
+                <div class="slider-grid" id="sliderGrid">
+                    <p style="color:var(--text-muted); font-size:0.9rem; text-align:center; padding:2rem 0;">
+                        <i class="fa-solid fa-arrow-left" style="margin-right:0.5rem;"></i>
+                        Add skills on the left to rate your proficiency here.
+                    </p>
+                </div>
+
+                <button class="analyze-btn" id="gapAnalyzeBtn" onclick="runGapAnalysis()">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> Run Gap Analysis
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="gapResults">
+            <div class="results-header">
+                <h2><i class="fa-solid fa-compass-drafting"></i> Gap Analysis Results</h2>
+            </div>
+
+            <div class="score-cards" id="gapScoreCards"></div>
+
+            <div class="charts-grid">
+                <div class="chart-card glassmorphism">
+                    <h3><i class="fa-solid fa-chart-bar"></i> Skills vs. Required</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="gapBarChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card glassmorphism">
+                    <h3><i class="fa-solid fa-chart-radar"></i> Proficiency Radar</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="gapRadarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom:1rem; font-size:1.2rem;"><i class="fa-solid fa-layer-group"
+                    style="color:var(--primary-light); margin-right:0.5rem;"></i>Skill-by-Skill Breakdown</h3>
+            <div class="gap-details-grid" id="gapDetailsGrid"></div>
+
+            <div class="reco-card glassmorphism">
+                <h3><i class="fa-solid fa-route"></i> Recommendations</h3>
+                <div id="recoList"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // ==================================
+        // Gap Analysis — Client-Side Engine
+        // ==================================
+
+        let userSkills = [];
+        let gapBarChartInstance = null;
+        let gapRadarChartInstance = null;
+
+        // Required skills per role (proficiency 0–100)
+        const roleRequirements = {
+            'frontend': { 'HTML/CSS': 90, 'JavaScript': 90, 'React': 85, 'TypeScript': 75, 'Git': 80, 'Responsive Design': 85, 'Testing': 60, 'Performance': 65, 'Accessibility': 60, 'Figma': 50 },
+            'backend': { 'Node.js': 85, 'Python': 80, 'SQL': 85, 'REST APIs': 90, 'Git': 80, 'Docker': 70, 'Authentication': 75, 'Database Design': 80, 'Testing': 70, 'Linux': 65 },
+            'fullstack': { 'JavaScript': 90, 'React': 80, 'Node.js': 80, 'SQL': 75, 'Git': 80, 'Docker': 65, 'REST APIs': 85, 'TypeScript': 70, 'HTML/CSS': 80, 'Testing': 65 },
+            'data-scientist': { 'Python': 90, 'Statistics': 85, 'Machine Learning': 80, 'Pandas': 85, 'SQL': 75, 'Data Visualization': 80, 'Deep Learning': 65, 'NLP': 55, 'R': 50, 'Big Data': 55 },
+            'ml-engineer': { 'Python': 90, 'TensorFlow': 80, 'PyTorch': 75, 'Docker': 70, 'Machine Learning': 90, 'MLOps': 70, 'SQL': 65, 'Statistics': 75, 'Cloud (AWS/GCP)': 70, 'Data Engineering': 60 },
+            'devops': { 'Docker': 90, 'Kubernetes': 85, 'CI/CD': 85, 'Linux': 90, 'AWS': 80, 'Terraform': 75, 'Git': 85, 'Monitoring': 70, 'Networking': 65, 'Scripting': 75 },
+            'mobile': { 'React Native': 85, 'JavaScript': 85, 'Swift': 70, 'Kotlin': 70, 'UI/UX': 75, 'REST APIs': 80, 'Git': 80, 'Testing': 60, 'Firebase': 65, 'App Store': 55 },
+            'cybersecurity': { 'Networking': 90, 'Linux': 85, 'Firewalls': 80, 'Encryption': 80, 'Python': 70, 'Penetration Testing': 75, 'SIEM': 65, 'Compliance': 60, 'Incident Response': 70, 'Cloud Security': 65 },
+            'ui-ux': { 'Figma': 90, 'Wireframing': 85, 'Prototyping': 85, 'User Research': 80, 'Design Systems': 75, 'HTML/CSS': 65, 'Accessibility': 70, 'Typography': 70, 'Color Theory': 65, 'Usability Testing': 75 },
+            'product-manager': { 'Product Strategy': 90, 'User Research': 85, 'Agile/Scrum': 85, 'Data Analysis': 75, 'Roadmapping': 80, 'Communication': 90, 'Wireframing': 60, 'SQL': 50, 'A/B Testing': 65, 'Stakeholder Mgmt': 85 },
+        };
+
+        // Skills tag input logic
+        const skillInput = document.getElementById('skillInput');
+        const tagContainer = document.getElementById('skillsTagContainer');
+
+        skillInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const val = skillInput.value.trim();
+                if (val && !userSkills.find(s => s.name.toLowerCase() === val.toLowerCase())) {
+                    userSkills.push({ name: val, proficiency: 50 });
+                    skillInput.value = '';
+                    renderSkillTags();
+                    renderSliders();
+                }
+            }
+        });
+
+        function removeSkill(index) {
+            userSkills.splice(index, 1);
+            renderSkillTags();
+            renderSliders();
+        }
+
+        function renderSkillTags() {
+            // Remove existing tags
+            tagContainer.querySelectorAll('.skill-tag').forEach(t => t.remove());
+            userSkills.forEach((skill, i) => {
+                const tag = document.createElement('span');
+                tag.className = 'skill-tag';
+                tag.innerHTML = `${skill.name} <span class="remove-tag" onclick="removeSkill(${i})">&times;</span>`;
+                tagContainer.insertBefore(tag, skillInput);
+            });
+        }
+
+        function renderSliders() {
+            const grid = document.getElementById('sliderGrid');
+            if (userSkills.length === 0) {
+                grid.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem; text-align:center; padding:2rem 0;">
+                    <i class="fa-solid fa-arrow-left" style="margin-right:0.5rem;"></i>
+                    Add skills on the left to rate your proficiency here.
+                </p>`;
+                return;
+            }
+            grid.innerHTML = '';
+            userSkills.forEach((skill, i) => {
+                grid.innerHTML += `
+                    <div class="slider-row">
+                        <span class="slider-label" title="${skill.name}">${skill.name}</span>
+                        <input type="range" min="0" max="100" value="${skill.proficiency}"
+                            oninput="updateSlider(${i}, this.value)">
+                        <span class="slider-value" id="sliderVal${i}">${skill.proficiency}</span>
+                    </div>`;
+            });
+        }
+
+        function updateSlider(index, value) {
+            userSkills[index].proficiency = parseInt(value);
+            document.getElementById(`sliderVal${index}`).textContent = value;
+        }
+
+        // ==================
+        // Run Gap Analysis
+        // ==================
+        function runGapAnalysis() {
+            const role = document.getElementById('targetRole').value;
+            if (!role) {
+                alert('Please select a target role!');
+                return;
+            }
+            if (userSkills.length === 0) {
+                alert('Please add at least one skill!');
+                return;
+            }
+
+            const btn = document.getElementById('gapAnalyzeBtn');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Analyzing...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                const results = computeGap(role);
+                renderGapResults(results);
+                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart"></i> Re-Analyze';
+                btn.disabled = false;
+            }, 1200);
+        }
+
+        function computeGap(roleKey) {
+            const required = roleRequirements[roleKey] || {};
+            const requiredSkills = Object.keys(required);
+            const expYears = parseInt(document.getElementById('experienceYears').value) || 0;
+
+            // Map user skills for easy lookup
+            const userMap = {};
+            userSkills.forEach(s => {
+                userMap[s.name.toLowerCase()] = s.proficiency;
+            });
+
+            // Build comparison data
+            const comparison = [];
+            const allSkills = new Set([...requiredSkills, ...userSkills.map(s => s.name)]);
+
+            allSkills.forEach(skill => {
+                const reqVal = required[skill] || 0;
+                // Try to match user skill case-insensitively
+                let userVal = userMap[skill.toLowerCase()] || 0;
+                const gap = Math.max(0, reqVal - userVal);
+                comparison.push({ skill, required: reqVal, current: userVal, gap });
+            });
+
+            // Sort by gap descending
+            comparison.sort((a, b) => b.gap - a.gap);
+
+            // Scores
+            const totalRequired = comparison.reduce((s, c) => s + c.required, 0);
+            const totalCurrent = comparison.reduce((s, c) => s + c.current, 0);
+            const readiness = totalRequired > 0 ? Math.round((totalCurrent / totalRequired) * 100) : 0;
+            const gapCount = comparison.filter(c => c.gap > 20).length;
+            const strongCount = comparison.filter(c => c.current >= c.required).length;
+
+            // Recommendations
+            const recommendations = generateRecommendations(comparison, roleKey, expYears);
+
+            return { comparison, readiness, gapCount, strongCount, totalSkills: comparison.length, recommendations, roleKey };
+        }
+
+        function generateRecommendations(comparison, roleKey, exp) {
+            const recs = [];
+            const critical = comparison.filter(c => c.gap >= 40);
+            const moderate = comparison.filter(c => c.gap >= 20 && c.gap < 40);
+            const onTrack = comparison.filter(c => c.gap < 20 && c.required > 0);
+
+            critical.forEach(c => {
+                recs.push({ text: `<strong>${c.skill}</strong> — Major gap (${c.gap}pts). Focus on this skill with dedicated courses or projects.`, priority: 'high' });
+            });
+            moderate.forEach(c => {
+                recs.push({ text: `<strong>${c.skill}</strong> — Moderate gap (${c.gap}pts). Build hands-on experience to close this gap.`, priority: 'medium' });
+            });
+
+            if (exp < 2) recs.push({ text: 'Consider internships or open source contributions to build practical experience.', priority: 'medium' });
+            if (critical.length === 0 && moderate.length === 0) recs.push({ text: 'You\'re well-aligned! Polish your portfolio and focus on advanced topics.', priority: 'low' });
+
+            return recs;
+        }
+
+        function getChartColors() {
+            const isDark = !document.body.classList.contains('light-theme');
+            return {
+                textColor: isDark ? '#f8fafc' : '#064e3b',
+                gridColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
+            };
+        }
+
+        function renderGapResults(results) {
+            const section = document.getElementById('gapResults');
+            section.classList.add('show');
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Score cards
+            document.getElementById('gapScoreCards').innerHTML = `
+                <div class="score-card glassmorphism">
+                    <div class="score-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                    <div class="score-value">${results.readiness}%</div>
+                    <div class="score-label">Role Readiness</div>
+                </div>
+                <div class="score-card glassmorphism">
+                    <div class="score-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                    <div class="score-value">${results.gapCount}</div>
+                    <div class="score-label">Skill Gaps</div>
+                </div>
+                <div class="score-card glassmorphism">
+                    <div class="score-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="score-value">${results.strongCount}</div>
+                    <div class="score-label">Skills on Track</div>
+                </div>
+                <div class="score-card glassmorphism">
+                    <div class="score-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="score-value">${results.totalSkills}</div>
+                    <div class="score-label">Total Skills</div>
+                </div>
+            `;
+
+            renderGapBarChart(results.comparison);
+            renderGapRadarChart(results.comparison);
+            renderGapDetails(results.comparison);
+            renderRecommendations(results.recommendations);
+        }
+
+        function renderGapBarChart(comparison) {
+            const ctx = document.getElementById('gapBarChart').getContext('2d');
+            if (gapBarChartInstance) gapBarChartInstance.destroy();
+            const colors = getChartColors();
+
+            const top10 = comparison.slice(0, 10);
+            gapBarChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: top10.map(c => c.skill),
+                    datasets: [
+                        {
+                            label: 'Your Level',
+                            data: top10.map(c => c.current),
+                            backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                            borderRadius: 4,
+                            borderSkipped: false,
+                        },
+                        {
+                            label: 'Required',
+                            data: top10.map(c => c.required),
+                            backgroundColor: 'rgba(16, 185, 129, 0.4)',
+                            borderRadius: 4,
+                            borderSkipped: false,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { labels: { color: colors.textColor, font: { family: 'Outfit' } } },
+                    },
+                    scales: {
+                        x: { max: 100, ticks: { color: colors.textColor }, grid: { color: colors.gridColor } },
+                        y: { ticks: { color: colors.textColor, font: { size: 11, family: 'Outfit' } }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        function renderGapRadarChart(comparison) {
+            const ctx = document.getElementById('gapRadarChart').getContext('2d');
+            if (gapRadarChartInstance) gapRadarChartInstance.destroy();
+            const colors = getChartColors();
+
+            const top8 = comparison.filter(c => c.required > 0).slice(0, 8);
+            gapRadarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: top8.map(c => c.skill),
+                    datasets: [
+                        {
+                            label: 'Your Level',
+                            data: top8.map(c => c.current),
+                            backgroundColor: 'rgba(139, 92, 246, 0.15)',
+                            borderColor: '#8b5cf6',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#8b5cf6',
+                            pointRadius: 4,
+                        },
+                        {
+                            label: 'Required',
+                            data: top8.map(c => c.required),
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderColor: '#10b981',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#10b981',
+                            pointRadius: 4,
+                            borderDash: [6, 3],
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { labels: { color: colors.textColor, font: { family: 'Outfit' } } },
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true, max: 100,
+                            ticks: { color: colors.textColor, backdropColor: 'transparent', stepSize: 25, font: { size: 10 } },
+                            grid: { color: colors.gridColor },
+                            angleLines: { color: colors.gridColor },
+                            pointLabels: { color: colors.textColor, font: { size: 11, family: 'Outfit' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderGapDetails(comparison) {
+            const grid = document.getElementById('gapDetailsGrid');
+            grid.innerHTML = '';
+            comparison.forEach(c => {
+                const percent = c.required > 0 ? Math.round((c.current / c.required) * 100) : (c.current > 0 ? 100 : 0);
+                const clampedPercent = Math.min(percent, 100);
+                let barColor;
+                if (clampedPercent >= 80) barColor = 'linear-gradient(90deg, #10b981, #34d399)';
+                else if (clampedPercent >= 50) barColor = 'linear-gradient(90deg, #fbbf24, #f59e0b)';
+                else barColor = 'linear-gradient(90deg, #ef4444, #f87171)';
+
+                let label;
+                if (c.gap === 0) label = '<span style="color:#10b981;">✓ On Track</span>';
+                else if (c.gap < 20) label = '<span style="color:#fbbf24;">Minor Gap</span>';
+                else label = `<span style="color:#ef4444;">Gap: ${c.gap}pts</span>`;
+
+                grid.innerHTML += `
+                    <div class="gap-detail-card glassmorphism">
+                        <div class="gap-skill-name">
+                            <i class="fa-solid fa-code" style="color:var(--primary-light); font-size:0.9rem;"></i>
+                            ${c.skill}
+                        </div>
+                        <div class="gap-bar-track">
+                            <div class="gap-bar-fill" style="width:${clampedPercent}%; background:${barColor};"></div>
+                        </div>
+                        <div class="gap-bar-labels">
+                            <span>You: ${c.current} / Required: ${c.required}</span>
+                            ${label}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function renderRecommendations(recs) {
+            const container = document.getElementById('recoList');
+            container.innerHTML = '';
+            recs.forEach(r => {
+                container.innerHTML += `
+                    <div class="reco-item">
+                        <i class="fa-solid fa-circle-arrow-right"></i>
+                        <span>${r.text}</span>
+                        <span class="reco-priority ${r.priority}">${r.priority}</span>
+                    </div>`;
+            });
+        }
+    </script>
+</body>
+
+</html>

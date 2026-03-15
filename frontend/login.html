@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | Login</title>
+    <!-- Modern Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-page-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 6rem 5% 2rem;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <!-- Background Elements Removed -->
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-border" onclick="window.location.href='login.html'">Login</button>
+            <button class="btn-gradient-border" onclick="window.location.href='register.html'">Sign Up</button>
+        </div>
+    </nav>
+
+
+
+    <div class="login-page-container">
+        <!-- Login / Auth Card -->
+        <div id="login-container" class="auth-container fade-in-up">
+            <div class="auth-card glassmorphism">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Enter your details to access your dashboard.</p>
+                </div>
+
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="switchTab('user')">User</button>
+                    <button class="tab-btn" onclick="switchTab('recruiter')">Recruiter</button>
+                </div>
+
+                <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <div class="input-wrapper">
+                            <!-- <i class="fa-regular fa-envelope"></i> -->
+                            <input type="email" id="email" placeholder="name@example.com" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <label class="checkbox-container">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-gradient-solid"
+                        style="width: 100%; border-radius: 12px; padding: 1rem;">Sign In <i
+                            class="fa-solid fa-arrow-right-to-bracket"></i></button>
+
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="register.html">Create one</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

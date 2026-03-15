@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | Career Roadmaps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .roadmap-page {
+            padding: 7rem 5% 4rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .page-header .breadcrumb a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .page-header .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Role Selection */
+        .role-selector {
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .role-selector label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .role-selector select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%2394a3b8'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+            transition: var(--transition-fast);
+        }
+
+        .role-selector select option {
+            background: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        .role-selector select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background-color: var(--input-bg-focus);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Roadmap Empty State */
+        .roadmap-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .roadmap-empty i {
+            font-size: 3rem;
+            color: var(--primary-light);
+            opacity: 0.4;
+            margin-bottom: 1rem;
+        }
+
+        .roadmap-empty p {
+            font-size: 1.05rem;
+        }
+
+        /* Roadmap Container */
+        .roadmap-container {
+            display: none;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .roadmap-container.show {
+            display: block;
+        }
+
+        .roadmap-role-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .roadmap-role-header h2 {
+            font-size: 1.8rem;
+        }
+
+        .roadmap-role-header h2 i {
+            color: var(--primary-light);
+            margin-right: 0.5rem;
+        }
+
+        .roadmap-role-header .role-tag {
+            padding: 0.3rem 1rem;
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary-light);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .roadmap-timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary-light), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .roadmap-step {
+            position: relative;
+            margin-bottom: 2rem;
+            padding: 1.75rem;
+            transition: var(--transition-slow);
+        }
+
+        .roadmap-step:hover {
+            transform: translateX(6px);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .roadmap-step::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 2rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            border: 3px solid var(--bg-color);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+            z-index: 1;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-header h3 {
+            font-size: 1.15rem;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 0.93rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .step-tasks {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-tasks li {
+            padding: 0.4rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .step-tasks li i {
+            color: var(--secondary);
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .step-duration {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+            padding: 0.3rem 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 50px;
+            font-size: 0.78rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Pro Tip */
+        .roadmap-tip {
+            margin-top: 2.5rem;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .roadmap-tip i {
+            color: #fbbf24;
+            font-size: 1.3rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+
+        .roadmap-tip p {
+            color: var(--text-muted);
+            font-size: 0.93rem;
+            line-height: 1.6;
+        }
+
+        .roadmap-tip strong {
+            color: var(--text-main);
+        }
+
+        @media (max-width: 600px) {
+            .roadmap-timeline {
+                padding-left: 2rem;
+            }
+
+            .roadmap-step::before {
+                left: -2rem;
+            }
+
+            .roadmap-timeline::before {
+                left: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='user-dashboard.html'" style="cursor:pointer;">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-solid"
+                onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                Logout <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="roadmap-page">
+        <div class="page-header fade-in-up">
+            <div class="breadcrumb">
+                <a href="user-dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
+                <span>Career Roadmaps</span>
+            </div>
+            <h1 class="main-title"><i class="fa-solid fa-road" style="color:var(--primary-light);"></i> Career
+                <span>Roadmaps</span>
+            </h1>
+            <p class="subtitle">Select a career goal and get a step-by-step roadmap to achieve it. Follow the ladder
+                from beginner to job-ready.</p>
+        </div>
+
+        <div class="role-selector fade-in-up delay-1">
+            <label for="roadmapRole"><i class="fa-solid fa-bullseye" style="color:var(--primary-light); margin-right:0.4rem;"></i> What do you want to become?</label>
+            <select id="roadmapRole" onchange="showRoadmap(this.value)">
+                <option value="">— Select your career goal —</option>
+                <option value="frontend">Frontend Developer</option>
+                <option value="backend">Backend Developer</option>
+                <option value="fullstack">Full Stack Developer</option>
+                <option value="data-scientist">Data Scientist</option>
+                <option value="ml-engineer">Machine Learning Engineer</option>
+                <option value="devops">DevOps Engineer</option>
+                <option value="mobile">Mobile App Developer</option>
+                <option value="cybersecurity">Cybersecurity Analyst</option>
+                <option value="ui-ux">UI/UX Designer</option>
+                <option value="product-manager">Product Manager</option>
+            </select>
+        </div>
+
+        <!-- Empty State -->
+        <div class="roadmap-empty glassmorphism" id="roadmapEmpty">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <p>Select a career goal above to view your personalized roadmap.</p>
+        </div>
+
+        <!-- Roadmap Display -->
+        <div class="roadmap-container" id="roadmapContainer"></div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // ==========================================
+        // Career Roadmaps Data
+        // ==========================================
+        const roadmaps = {
+            'frontend': {
+                title: 'Frontend Developer',
+                icon: 'fa-solid fa-display',
+                steps: [
+                    {
+                        title: 'Learn HTML & CSS Fundamentals',
+                        desc: 'Start with the building blocks of the web. Master semantic HTML, CSS layouts (Flexbox, Grid), responsive design, and basic accessibility.',
+                        tasks: ['Build 5+ static web pages from scratch', 'Complete freeCodeCamp Responsive Web Design certification', 'Learn CSS animations and transitions', 'Practice mobile-first responsive layouts'],
+                        duration: '4-6 weeks'
+                    },
+                    {
+                        title: 'Master JavaScript',
+                        desc: 'Learn core JavaScript — variables, functions, DOM manipulation, events, async/await, and ES6+ features.',
+                        tasks: ['Complete JavaScript.info or Eloquent JavaScript', 'Build interactive projects (calculator, quiz app, to-do list)', 'Learn Fetch API and work with JSON data', 'Understand closures, promises, and event loop'],
+                        duration: '6-8 weeks'
+                    },
+                    {
+                        title: 'Learn a Frontend Framework (React)',
+                        desc: 'Pick React (most in-demand). Learn components, props, state, hooks, routing, and state management.',
+                        tasks: ['Complete the official React docs tutorial', 'Build 3 React projects (portfolio, e-commerce UI, dashboard)', 'Learn React Router for multi-page navigation', 'Explore state management with Context API or Redux'],
+                        duration: '6-8 weeks'
+                    },
+                    {
+                        title: 'Learn TypeScript & Tooling',
+                        desc: 'Add type safety with TypeScript. Learn build tools like Vite, package managers (npm/pnpm), and linting.',
+                        tasks: ['Convert a JS project to TypeScript', 'Set up ESLint and Prettier in your projects', 'Learn Vite or Webpack basics', 'Understand module systems (ESM vs CommonJS)'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Version Control & Collaboration',
+                        desc: 'Master Git and GitHub for team collaboration. Learn branching, pull requests, and code reviews.',
+                        tasks: ['Learn git add, commit, push, merge, rebase', 'Create a GitHub profile with pinned projects', 'Contribute to at least 1 open source project', 'Practice resolving merge conflicts'],
+                        duration: '2-3 weeks'
+                    },
+                    {
+                        title: 'Testing & Performance',
+                        desc: 'Write tests for your components and optimize performance. Learn testing libraries and browser dev tools.',
+                        tasks: ['Learn Jest and React Testing Library', 'Write unit tests for your React components', 'Use Lighthouse to audit and optimize performance', 'Learn lazy loading, code splitting, and memoization'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Build Portfolio & Apply',
+                        desc: 'Create a polished portfolio, prepare for interviews, and start applying to jobs.',
+                        tasks: ['Build a personal portfolio website', 'Prepare 3-4 showcase projects with live demos', 'Practice frontend interview questions (JS, CSS, React)', 'Solve 50+ LeetCode easy/medium problems', 'Apply to 10+ jobs per week and network on LinkedIn'],
+                        duration: '4-6 weeks'
+                    }
+                ],
+                tip: 'Frontend development is visual — always deploy your projects (Vercel, Netlify) so recruiters can see them live. Your GitHub profile is your second resume!'
+            },
+            'backend': {
+                title: 'Backend Developer',
+                icon: 'fa-solid fa-server',
+                steps: [
+                    {
+                        title: 'Pick a Language: Node.js or Python',
+                        desc: 'Choose Node.js (JavaScript) for full-stack versatility or Python for data-heavy backends. Learn the language deeply.',
+                        tasks: ['Complete a structured course (The Odin Project / CS50)', 'Learn data structures: arrays, objects, maps, sets', 'Understand OOP and functional programming concepts', 'Build CLI tools to practice logic and file I/O'],
+                        duration: '5-7 weeks'
+                    },
+                    {
+                        title: 'Learn a Web Framework',
+                        desc: 'Pick Express.js (Node) or Django/Flask (Python). Build REST APIs and understand MVC architecture.',
+                        tasks: ['Build a REST API with CRUD operations', 'Learn middleware, routing, and error handling', 'Implement request validation and rate limiting', 'Practice with Postman or Thunder Client for API testing'],
+                        duration: '4-6 weeks'
+                    },
+                    {
+                        title: 'Databases & Data Modeling',
+                        desc: 'Learn SQL (PostgreSQL/MySQL) and NoSQL (MongoDB). Understand schema design, indexing, and queries.',
+                        tasks: ['Complete SQLBolt or Mode SQL tutorial', 'Design a relational schema for a real-world app', 'Learn MongoDB CRUD with Mongoose', 'Understand indexing, joins, and query optimization'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Authentication & Security',
+                        desc: 'Implement user authentication (JWT, sessions, OAuth). Learn security best practices (OWASP Top 10).',
+                        tasks: ['Build a login/register system with JWT', 'Implement OAuth2 with Google/GitHub login', 'Learn about SQL injection, XSS, CSRF prevention', 'Add role-based access control to your API'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'DevOps Basics & Deployment',
+                        desc: 'Learn Docker, basic CI/CD, and cloud deployment. Deploy your APIs to production.',
+                        tasks: ['Containerize your app with Docker', 'Deploy to AWS EC2, Heroku, or Railway', 'Set up a basic CI/CD pipeline with GitHub Actions', 'Learn environment variables and secrets management'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'DSA & Problem Solving',
+                        desc: 'Strengthen your DSA fundamentals for coding interviews. Practice on LeetCode and Codeforces.',
+                        tasks: ['Learn arrays, linked lists, trees, graphs, hash maps', 'Solve 100+ LeetCode problems (easy + medium)', 'Practice time & space complexity analysis', 'Participate in coding contests on Codeforces/LeetCode'],
+                        duration: '6-8 weeks (ongoing)'
+                    },
+                    {
+                        title: 'Build Projects & Apply',
+                        desc: 'Build full backend projects, create a strong resume and GitHub profile, and start applying.',
+                        tasks: ['Build 2-3 production-grade APIs with docs', 'Write API documentation using Swagger/OpenAPI', 'Prepare for system design basics (load balancing, caching)', 'Participate in hackathons for team experience', 'Apply to positions and practice mock interviews'],
+                        duration: '4-6 weeks'
+                    }
+                ],
+                tip: 'Backend interviews focus heavily on DSA and system design. Start LeetCode early and solve a few problems daily — consistency beats cramming!'
+            },
+            'fullstack': {
+                title: 'Full Stack Developer',
+                icon: 'fa-solid fa-layer-group',
+                steps: [
+                    {
+                        title: 'HTML, CSS & JavaScript Mastery',
+                        desc: 'Build a rock-solid foundation in web fundamentals before moving to frameworks.',
+                        tasks: ['Build responsive static websites', 'Master DOM manipulation and event handling', 'Learn ES6+ features: destructuring, spread, arrow functions', 'Complete freeCodeCamp or The Odin Project foundations'],
+                        duration: '6-8 weeks'
+                    },
+                    {
+                        title: 'Frontend Framework (React)',
+                        desc: 'Learn React — components, hooks, routing, and state management.',
+                        tasks: ['Build 3+ React apps with increasing complexity', 'Learn React Router and form handling', 'Explore Zustand or Redux for state management', 'Style with Tailwind CSS or CSS Modules'],
+                        duration: '5-7 weeks'
+                    },
+                    {
+                        title: 'Backend with Node.js & Express',
+                        desc: 'Build REST APIs, connect to databases, and handle server-side logic.',
+                        tasks: ['Create CRUD APIs with Express and MongoDB', 'Implement JWT authentication', 'Learn file uploads, pagination, and error handling', 'Build a full API for one of your React frontends'],
+                        duration: '5-6 weeks'
+                    },
+                    {
+                        title: 'Databases: SQL + NoSQL',
+                        desc: 'Learn PostgreSQL for structured data and MongoDB for flexible schemas. Understand when to use each.',
+                        tasks: ['Design schemas for a blog and an e-commerce app', 'Learn Prisma ORM or Sequelize for SQL', 'Practice MongoDB aggregation pipelines', 'Build projects using both SQL and NoSQL'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Git, Docker & Deployment',
+                        desc: 'Version control, containerization, and deploying full-stack apps to the cloud.',
+                        tasks: ['Use Git with feature branches and PRs', 'Dockerize frontend and backend together', 'Deploy full-stack apps on Vercel + Railway/Render', 'Set up GitHub Actions for automated testing'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'TypeScript & Testing',
+                        desc: 'Add TypeScript to both frontend and backend. Write meaningful tests.',
+                        tasks: ['Migrate a project to full TypeScript', 'Write unit and integration tests', 'Learn Jest, React Testing Library, and Supertest', 'Set up end-to-end testing with Playwright'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'DSA, Projects & Job Prep',
+                        desc: 'Solve DSA problems, build impressive full-stack projects, and prepare for interviews.',
+                        tasks: ['Solve 100+ LeetCode problems', 'Build 2 full-stack projects with auth, CRUD, and deploy', 'Create a portfolio site showcasing your work', 'Practice system design and behavioral interviews', 'Participate in 2+ hackathons'],
+                        duration: '6-8 weeks'
+                    }
+                ],
+                tip: 'Full-stack is about breadth. Focus on building complete projects end-to-end — an app with auth, database, frontend, and deployment impresses more than 10 half-finished ones.'
+            },
+            'data-scientist': {
+                title: 'Data Scientist',
+                icon: 'fa-solid fa-chart-pie',
+                steps: [
+                    {
+                        title: 'Python Programming',
+                        desc: 'Master Python fundamentals — it\'s the primary language for data science.',
+                        tasks: ['Learn Python basics: variables, loops, functions, OOP', 'Complete Automate the Boring Stuff or Python Crash Course', 'Practice on HackerRank Python challenges', 'Learn file handling, exception handling, and modules'],
+                        duration: '4-6 weeks'
+                    },
+                    {
+                        title: 'Mathematics & Statistics',
+                        desc: 'Build a strong math foundation — linear algebra, calculus, probability, and statistics.',
+                        tasks: ['Learn descriptive & inferential statistics', 'Study probability distributions and hypothesis testing', 'Complete Khan Academy Statistics or MIT OCW', 'Understand linear algebra basics (vectors, matrices)'],
+                        duration: '5-6 weeks'
+                    },
+                    {
+                        title: 'Data Analysis with Pandas & NumPy',
+                        desc: 'Learn to clean, transform, and analyze data using Python libraries.',
+                        tasks: ['Complete Kaggle Pandas/NumPy micro-courses', 'Analyze 5+ real-world datasets from Kaggle', 'Learn data cleaning: missing values, duplicates, outliers', 'Create Jupyter notebooks with documented analysis'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Data Visualization',
+                        desc: 'Tell stories with data using Matplotlib, Seaborn, and Plotly.',
+                        tasks: ['Learn Matplotlib and Seaborn for static plots', 'Create interactive dashboards with Plotly or Streamlit', 'Build visual reports from real datasets', 'Study data storytelling principles'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Machine Learning',
+                        desc: 'Learn supervised and unsupervised ML algorithms. Understand model evaluation and tuning.',
+                        tasks: ['Complete Andrew Ng\'s Machine Learning course', 'Learn scikit-learn: regression, classification, clustering', 'Practice on Kaggle competitions', 'Understand cross-validation, hyperparameter tuning, and metrics'],
+                        duration: '6-8 weeks'
+                    },
+                    {
+                        title: 'SQL & Big Data Basics',
+                        desc: 'Learn SQL for data querying and get introduced to big data tools.',
+                        tasks: ['Complete SQLBolt and LeetCode SQL problems', 'Learn to query large datasets efficiently', 'Get introduced to Spark or BigQuery', 'Practice SQL joins, window functions, CTEs'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Projects, Portfolio & Job Prep',
+                        desc: 'Build end-to-end data science projects and prepare for interviews.',
+                        tasks: ['Build 3+ projects: EDA, ML model, dashboard', 'Publish projects on GitHub with clear READMEs', 'Write blog posts explaining your analysis', 'Practice SQL and ML interview questions', 'Compete in Kaggle competitions for portfolio credibility'],
+                        duration: '5-7 weeks'
+                    }
+                ],
+                tip: 'Data science interviews test SQL, statistics, and ML fundamentals heavily. Build a strong Kaggle profile and document your projects with clear storytelling.'
+            },
+            'ml-engineer': {
+                title: 'Machine Learning Engineer',
+                icon: 'fa-solid fa-brain',
+                steps: [
+                    {
+                        title: 'Python & Mathematics',
+                        desc: 'Master Python and the math behind ML — linear algebra, calculus, probability.',
+                        tasks: ['Get comfortable with Python OOP and data structures', 'Study linear algebra (3Blue1Brown Essence of LA)', 'Learn calculus for optimization (gradients, chain rule)', 'Complete probability and statistics fundamentals'],
+                        duration: '6-8 weeks'
+                    },
+                    {
+                        title: 'Classical Machine Learning',
+                        desc: 'Learn supervised and unsupervised algorithms with scikit-learn.',
+                        tasks: ['Implement linear/logistic regression from scratch', 'Learn decision trees, random forests, SVMs, k-means', 'Understand bias-variance tradeoff and regularization', 'Complete Andrew Ng\'s ML course or fast.ai Part 1'],
+                        duration: '5-7 weeks'
+                    },
+                    {
+                        title: 'Deep Learning',
+                        desc: 'Dive into neural networks with TensorFlow or PyTorch.',
+                        tasks: ['Learn neural network architecture (forward/back propagation)', 'Build CNNs for image classification', 'Build RNNs/LSTMs for sequence data', 'Complete Deep Learning Specialization (Coursera) or fast.ai'],
+                        duration: '6-8 weeks'
+                    },
+                    {
+                        title: 'NLP & Computer Vision',
+                        desc: 'Specialize in at least one domain — natural language processing or computer vision.',
+                        tasks: ['Learn text preprocessing, embeddings (Word2Vec, BERT)', 'Build a sentiment analysis or chatbot project', 'Learn object detection (YOLO) or image segmentation', 'Fine-tune pre-trained models using HuggingFace Transformers'],
+                        duration: '5-6 weeks'
+                    },
+                    {
+                        title: 'MLOps & Model Deployment',
+                        desc: 'Learn to deploy, monitor, and maintain ML models in production.',
+                        tasks: ['Serve models with Flask/FastAPI', 'Containerize ML apps with Docker', 'Learn MLflow or Weights & Biases for experiment tracking', 'Deploy to AWS SageMaker or GCP Vertex AI'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'DSA & System Design',
+                        desc: 'Prepare for coding interviews and ML system design rounds.',
+                        tasks: ['Solve 100+ LeetCode problems (arrays, graphs, DP)', 'Study ML system design (recommendation engines, search)', 'Practice designing end-to-end ML pipelines', 'Learn data engineering basics (ETL, feature stores)'],
+                        duration: '6-8 weeks (ongoing)'
+                    },
+                    {
+                        title: 'Research, Projects & Apply',
+                        desc: 'Publish research, build impressive projects, and prepare for ML engineer interviews.',
+                        tasks: ['Build 3+ end-to-end ML projects with deployment', 'Read and implement papers from arXiv', 'Contribute to open-source ML libraries', 'Compete in Kaggle for practical experience', 'Practice ML-specific interview questions'],
+                        duration: '5-7 weeks'
+                    }
+                ],
+                tip: 'ML engineering is where software engineering meets data science. Strong coding skills + deep ML knowledge + deployment expertise = highly valued combination.'
+            },
+            'devops': {
+                title: 'DevOps Engineer',
+                icon: 'fa-solid fa-gears',
+                steps: [
+                    {
+                        title: 'Linux & Scripting',
+                        desc: 'Master the Linux command line and shell scripting — the foundation of DevOps.',
+                        tasks: ['Learn Linux file system, permissions, processes', 'Write Bash scripts for automation', 'Complete Linux Journey or OverTheWire Bandit', 'Learn a scripting language (Python or Bash)'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Networking Fundamentals',
+                        desc: 'Understand TCP/IP, DNS, HTTP, firewalls, and load balancers.',
+                        tasks: ['Learn OSI model and TCP/IP stack', 'Understand DNS, DHCP, and HTTP/HTTPS', 'Practice with tools: ping, curl, netstat, tcpdump', 'Learn about VPNs, firewalls, and proxy servers'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Version Control & CI/CD',
+                        desc: 'Master Git workflows and build CI/CD pipelines.',
+                        tasks: ['Learn Git branching strategies (GitFlow, trunk-based)', 'Build CI/CD pipelines with GitHub Actions', 'Learn Jenkins or GitLab CI basics', 'Automate testing, linting, and deployment in pipelines'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Containers & Docker',
+                        desc: 'Learn containerization — building, running, and managing Docker containers.',
+                        tasks: ['Learn Docker: images, containers, volumes, networks', 'Write Dockerfiles for various app stacks', 'Use Docker Compose for multi-container apps', 'Understand container registries (Docker Hub, ECR)'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Kubernetes & Orchestration',
+                        desc: 'Learn container orchestration with Kubernetes for production-grade deployments.',
+                        tasks: ['Learn pods, deployments, services, ingress', 'Set up a local K8s cluster with Minikube', 'Deploy a multi-service app on Kubernetes', 'Learn Helm charts for package management'],
+                        duration: '5-6 weeks'
+                    },
+                    {
+                        title: 'Cloud & Infrastructure as Code',
+                        desc: 'Learn AWS/GCP/Azure and Infrastructure as Code with Terraform.',
+                        tasks: ['Get AWS Cloud Practitioner or Solutions Architect cert', 'Learn EC2, S3, RDS, Lambda, VPC on AWS', 'Write Terraform configs for cloud infrastructure', 'Understand IAM roles, policies, and security groups'],
+                        duration: '5-7 weeks'
+                    },
+                    {
+                        title: 'Monitoring, Projects & Apply',
+                        desc: 'Learn monitoring/logging tools and build a DevOps portfolio.',
+                        tasks: ['Set up Prometheus + Grafana for monitoring', 'Learn ELK stack or CloudWatch for logging', 'Build 2-3 DevOps projects (full pipeline, K8s deployment)', 'Get certified (AWS, CKA, or Terraform)', 'Document everything in a DevOps portfolio blog'],
+                        duration: '5-6 weeks'
+                    }
+                ],
+                tip: 'DevOps is about automation and reliability. Document every project as a blog post or README — this shows both technical skill and communication ability.'
+            },
+            'mobile': {
+                title: 'Mobile App Developer',
+                icon: 'fa-solid fa-mobile-screen-button',
+                steps: [
+                    {
+                        title: 'Programming Fundamentals',
+                        desc: 'Learn JavaScript (for React Native) or Swift/Kotlin (for native development).',
+                        tasks: ['Master JavaScript or pick Swift (iOS) / Kotlin (Android)', 'Learn data structures and algorithms basics', 'Build small console or web projects to practice', 'Understand async programming and error handling'],
+                        duration: '5-7 weeks'
+                    },
+                    {
+                        title: 'Learn React Native (Cross-Platform)',
+                        desc: 'Build cross-platform mobile apps with React Native — one codebase for iOS and Android.',
+                        tasks: ['Set up React Native development environment', 'Learn core components: View, Text, FlatList, ScrollView', 'Build navigation with React Navigation', 'Handle forms, inputs, and validation'],
+                        duration: '5-6 weeks'
+                    },
+                    {
+                        title: 'State Management & APIs',
+                        desc: 'Manage app state and connect your app to backend APIs.',
+                        tasks: ['Learn Context API or Zustand for state management', 'Fetch data from REST APIs using Axios or fetch', 'Handle loading states, errors, and offline mode', 'Implement pull-to-refresh and infinite scrolling'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'UI/UX & Device Features',
+                        desc: 'Create beautiful, native-feeling interfaces and access device features.',
+                        tasks: ['Learn platform-specific design guidelines (Material/HIG)', 'Implement animations with Reanimated library', 'Access camera, location, and push notifications', 'Learn responsive layouts for different screen sizes'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Backend Integration & Firebase',
+                        desc: 'Learn Firebase for quick backends or connect to your own Node.js API.',
+                        tasks: ['Set up Firebase Auth, Firestore, and Storage', 'Implement real-time data sync', 'Build a chat or social media feature', 'Learn push notifications with FCM'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Testing & App Store Publishing',
+                        desc: 'Test your apps and learn the process of publishing to app stores.',
+                        tasks: ['Write unit and integration tests', 'Learn about App Store and Play Store guidelines', 'Create app icons, screenshots, and store listings', 'Publish at least one app to a store'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Portfolio & Job Prep',
+                        desc: 'Build a portfolio of published apps and prepare for mobile dev interviews.',
+                        tasks: ['Build 3+ polished apps (one with auth, one with real-time features)', 'Publish apps with real users and reviews', 'Prepare for mobile-specific interview questions', 'Solve LeetCode problems focusing on arrays and strings', 'Create demo videos of your apps for portfolio'],
+                        duration: '4-6 weeks'
+                    }
+                ],
+                tip: 'Published apps with real users are the strongest signal to employers. Even a simple utility app on the Play Store/App Store speaks louder than 10 local projects.'
+            },
+            'cybersecurity': {
+                title: 'Cybersecurity Analyst',
+                icon: 'fa-solid fa-shield-halved',
+                steps: [
+                    {
+                        title: 'Networking & OS Fundamentals',
+                        desc: 'Build a strong foundation in networking, Linux, and Windows systems.',
+                        tasks: ['Learn TCP/IP, DNS, DHCP, HTTP protocols', 'Master Linux command line (file permissions, processes)', 'Understand Windows security fundamentals', 'Complete CompTIA Network+ study material'],
+                        duration: '5-6 weeks'
+                    },
+                    {
+                        title: 'Security Fundamentals',
+                        desc: 'Learn core cybersecurity concepts — CIA triad, encryption, firewalls, access control.',
+                        tasks: ['Study CompTIA Security+ material', 'Learn symmetric & asymmetric encryption', 'Understand firewalls, IDS/IPS, and VPNs', 'Learn about authentication and authorization mechanisms'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Scripting with Python',
+                        desc: 'Learn Python for automating security tasks, writing tools, and analyzing data.',
+                        tasks: ['Learn Python basics and file handling', 'Write scripts for log parsing and network scanning', 'Automate repetitive security tasks', 'Learn to use Python security libraries (Scapy, requests)'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Ethical Hacking & Penetration Testing',
+                        desc: 'Learn offensive security techniques to understand how attacks work.',
+                        tasks: ['Practice on TryHackMe and HackTheBox platforms', 'Learn OWASP Top 10 vulnerabilities', 'Use tools: Nmap, Burp Suite, Wireshark, Metasploit', 'Complete TryHackMe learning paths'],
+                        duration: '6-8 weeks'
+                    },
+                    {
+                        title: 'SIEM & Incident Response',
+                        desc: 'Learn security monitoring, log analysis, and how to respond to security incidents.',
+                        tasks: ['Learn a SIEM tool (Splunk or ELK)', 'Practice analyzing security logs and alerts', 'Study incident response frameworks (NIST)', 'Build a home lab for practicing detection'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Cloud Security & Compliance',
+                        desc: 'Understand cloud security (AWS/Azure) and compliance frameworks.',
+                        tasks: ['Learn AWS security services (IAM, GuardDuty, CloudTrail)', 'Study compliance frameworks (GDPR, HIPAA, SOC 2)', 'Understand cloud architecture security best practices', 'Learn about zero trust architecture'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Certifications, CTFs & Apply',
+                        desc: 'Get certified, participate in CTF competitions, and apply for security roles.',
+                        tasks: ['Get CompTIA Security+ certification', 'Participate in CTF competitions regularly', 'Build a security portfolio with write-ups', 'Network in cybersecurity communities (Discord, Reddit, local meetups)', 'Apply for SOC Analyst or Junior Security Analyst roles'],
+                        duration: '5-7 weeks'
+                    }
+                ],
+                tip: 'Cybersecurity values certifications highly. CompTIA Security+ is typically the minimum — get it early. Pair it with hands-on CTF experience and you stand out.'
+            },
+            'ui-ux': {
+                title: 'UI/UX Designer',
+                icon: 'fa-solid fa-palette',
+                steps: [
+                    {
+                        title: 'Design Fundamentals',
+                        desc: 'Learn core design principles — typography, color theory, visual hierarchy, and layout.',
+                        tasks: ['Study design principles (contrast, alignment, proximity, repetition)', 'Learn typography basics and font pairing', 'Understand color theory and palette creation', 'Analyze 10+ well-designed websites/apps'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Master Figma',
+                        desc: 'Learn Figma — the industry-standard design tool for UI/UX.',
+                        tasks: ['Complete Figma fundamentals course', 'Learn auto-layout, components, and variants', 'Practice designing common UI patterns', 'Build a design system with reusable components'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'User Research & UX',
+                        desc: 'Learn how to understand users through research, personas, and journey mapping.',
+                        tasks: ['Learn user interview techniques', 'Create user personas and empathy maps', 'Map user journeys and identify pain points', 'Study UX case studies from top companies'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Wireframing & Prototyping',
+                        desc: 'Turn research into wireframes and interactive prototypes.',
+                        tasks: ['Create low-fidelity wireframes for 3 app ideas', 'Build high-fidelity mockups in Figma', 'Create interactive prototypes with transitions', 'Learn micro-interactions and animation principles'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Usability Testing',
+                        desc: 'Learn to test designs with real users and iterate based on feedback.',
+                        tasks: ['Conduct moderated usability tests', 'Use tools like Maze or UsabilityHub for remote testing', 'Analyze results and create improvement recommendations', 'Learn A/B testing concepts'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Design Systems & Accessibility',
+                        desc: 'Build scalable design systems and design for everyone (accessibility).',
+                        tasks: ['Study design systems (Material Design, Apple HIG)', 'Build your own design system in Figma', 'Learn WCAG accessibility guidelines', 'Audit a website for accessibility issues'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Portfolio & Job Prep',
+                        desc: 'Build a stunning portfolio and prepare for design interviews.',
+                        tasks: ['Create 3-4 detailed case studies with process documentation', 'Build a personal portfolio website', 'Practice whiteboard design challenges', 'Learn basic HTML/CSS to communicate with developers', 'Share your work on Dribbble and Behance'],
+                        duration: '4-6 weeks'
+                    }
+                ],
+                tip: 'Your portfolio is everything in UI/UX. Recruiters want to see your process, not just the final designs. Document every project as a detailed case study with research, wireframes, and iterations.'
+            },
+            'product-manager': {
+                title: 'Product Manager',
+                icon: 'fa-solid fa-diagram-project',
+                steps: [
+                    {
+                        title: 'Product Management Foundations',
+                        desc: 'Understand what a PM does — strategy, discovery, delivery, and metrics.',
+                        tasks: ['Read "Inspired" by Marty Cagan', 'Learn the product lifecycle: ideation to launch', 'Study different PM frameworks (Lean, Agile, RICE)', 'Analyze products you use daily — what makes them great?'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'User Research & Discovery',
+                        desc: 'Learn how to deeply understand user needs and validate product ideas.',
+                        tasks: ['Conduct 5+ user interviews', 'Learn Jobs-to-be-Done (JTBD) framework', 'Create user personas and problem statements', 'Run surveys and analyze qualitative data'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Agile & Scrum',
+                        desc: 'Master Agile methodology — sprints, standups, retrospectives, and backlog management.',
+                        tasks: ['Get Certified Scrum Product Owner (CSPO) or similar', 'Learn to write user stories and acceptance criteria', 'Practice sprint planning and prioritization', 'Use Jira or Linear for project management'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Data Analysis & Metrics',
+                        desc: 'Learn to make data-driven decisions. Track KPIs, run experiments, and analyze results.',
+                        tasks: ['Learn SQL basics for querying product data', 'Understand key metrics: DAU, retention, conversion, NPS', 'Set up and analyze A/B tests', 'Learn Google Analytics or Mixpanel'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Wireframing & Communication',
+                        desc: 'Learn to create wireframes and communicate product vision to stakeholders.',
+                        tasks: ['Learn basic wireframing in Figma or Balsamiq', 'Write clear PRDs (Product Requirement Documents)', 'Practice presenting product strategy to stakeholders', 'Learn roadmap tools (Productboard, Notion)'],
+                        duration: '3-4 weeks'
+                    },
+                    {
+                        title: 'Strategy & Roadmapping',
+                        desc: 'Learn how to define product strategy and create execution roadmaps.',
+                        tasks: ['Study competitive analysis and market research', 'Learn prioritization frameworks (RICE, MoSCoW)', 'Create a product roadmap for a real or fictional product', 'Study go-to-market strategies'],
+                        duration: '4-5 weeks'
+                    },
+                    {
+                        title: 'Build Experience & Apply',
+                        desc: 'Build PM credentials through projects, side products, and networking.',
+                        tasks: ['Build or manage a side project as PM', 'Create 2-3 PM case studies for your portfolio', 'Practice PM interview questions (estimation, product sense, execution)', 'Network with PMs on LinkedIn and at meetups', 'Apply for APM or Junior PM roles'],
+                        duration: '4-6 weeks'
+                    }
+                ],
+                tip: 'PM interviews test product sense, analytical thinking, and communication. Practice structured frameworks for answering questions and always back your ideas with data.'
+            }
+        };
+
+        // ==========================================
+        // Render Logic
+        // ==========================================
+        function showRoadmap(roleKey) {
+            const container = document.getElementById('roadmapContainer');
+            const empty = document.getElementById('roadmapEmpty');
+
+            if (!roleKey || !roadmaps[roleKey]) {
+                container.classList.remove('show');
+                container.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+
+            empty.style.display = 'none';
+            const data = roadmaps[roleKey];
+
+            let stepsHTML = '';
+            data.steps.forEach((step, i) => {
+                const tasksHTML = step.tasks.map(t => `<li><i class="fa-solid fa-check"></i> ${t}</li>`).join('');
+                stepsHTML += `
+                    <div class="roadmap-step glassmorphism">
+                        <div class="step-header">
+                            <span class="step-number">${i + 1}</span>
+                            <h3>${step.title}</h3>
+                        </div>
+                        <p class="step-desc">${step.desc}</p>
+                        <ul class="step-tasks">${tasksHTML}</ul>
+                        <span class="step-duration"><i class="fa-regular fa-clock"></i> ${step.duration}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="roadmap-role-header">
+                    <h2><i class="${data.icon}"></i> ${data.title} Roadmap</h2>
+                    <span class="role-tag">${data.steps.length} Steps</span>
+                </div>
+                <div class="roadmap-timeline">
+                    ${stepsHTML}
+                </div>
+                <div class="roadmap-tip glassmorphism">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <p><strong>Pro Tip:</strong> ${data.tip}</p>
+                </div>
+            `;
+
+            container.classList.add('show');
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+
+</html>

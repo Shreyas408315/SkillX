@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | Recommended Courses</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .courses-page {
+            padding: 7rem 5% 4rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .page-header .breadcrumb a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .page-header .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin-bottom: 3rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: var(--input-bg-focus);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .search-container button {
+            border-radius: 50px;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        /* Results Display */
+        .results-container {
+            display: none; /* hidden by default */
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .results-container.show {
+            display: block;
+        }
+
+        .results-header {
+            margin-bottom: 2rem;
+        }
+
+        .results-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .results-header p {
+            color: var(--text-muted);
+        }
+
+        .topics-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 3rem;
+        }
+
+        .topic-pill {
+            padding: 0.6rem 1.2rem;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--primary-light);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 50px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Course Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: var(--transition-fast);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+
+        .course-platform {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .course-action {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* Loading Skeleton */
+        .loading-state {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 0;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .loading-state i {
+            font-size: 2.5rem;
+            color: var(--primary-light);
+        }
+
+        .loading-state.show {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='user-dashboard.html'" style="cursor:pointer;">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-solid"
+                onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                Logout <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="courses-page">
+        <div class="page-header fade-in-up">
+            <div class="breadcrumb">
+                <a href="user-dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+                <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
+                <span>Courses</span>
+            </div>
+            <h1 class="main-title"><i class="fa-solid fa-book-open" style="color:var(--primary-light);"></i> Recommended
+                <span>Courses</span>
+            </h1>
+            <p class="subtitle">Search for a skill, course or topic to view your curriculum and find the best learning resources.</p>
+        </div>
+
+        <div class="search-container fade-in-up delay-1">
+            <input type="text" id="courseSearch" placeholder="e.g. ReactJS, Data Science, Prompt Engineering..." onkeyup="if(event.key === 'Enter') handleSearch()">
+            <button class="btn-gradient-solid" onclick="handleSearch()">
+                <i class="fa-solid fa-magnifying-glass"></i> Find
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" id="loadingState">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <p>Curating topics and courses for you...</p>
+        </div>
+
+        <!-- Results Container -->
+        <div class="results-container" id="resultsContainer">
+            <div class="results-header">
+                <h2>Curriculum & Resources for "<span id="displayQuery"></span>"</h2>
+                <p>Here are the key topics you need to master and the best online courses to get started.</p>
+            </div>
+
+            <h3 style="margin-bottom: 1rem; font-size: 1.1rem; color: var(--text-muted);">Key Topics to Study</h3>
+            <div class="topics-list" id="topicsContainer">
+                <!-- Topics injected here -->
+            </div>
+
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text-muted);">Recommended Online Courses</h3>
+            <div class="course-grid" id="courseGrid">
+                <!-- Courses injected here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Mock API logic for generating courses based on search
+        function handleSearch() {
+            const query = document.getElementById('courseSearch').value.trim();
+            if(!query) return;
+
+            // Hide results, show loading
+            document.getElementById('resultsContainer').classList.remove('show');
+            document.getElementById('loadingState').classList.add('show');
+            document.getElementById('displayQuery').innerText = query;
+
+            // Simulate API Delay
+            setTimeout(() => {
+                document.getElementById('loadingState').classList.remove('show');
+                renderResults(query);
+            }, 1200);
+        }
+
+        function renderResults(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            // Basic mock data generation based on keywords
+            let topics = [];
+            let courses = [];
+
+            if(lowerQuery.includes('react') || lowerQuery.includes('frontend')) {
+                topics = ['JSX & Components', 'Props & State', 'React Hooks (useState, useEffect)', 'React Router', 'Context API & Redux', 'Performance Optimization'];
+                courses = [
+                    { platform: 'Coursera', icon: 'fa-solid fa-graduation-cap', title: 'Meta React Native Specialization', level: 'Beginner', duration: '3 months', link: '#' },
+                    { platform: 'Udemy', icon: 'fa-solid fa-play', title: 'React - The Complete Guide (incl Hooks, React Router, Redux)', level: 'All Levels', duration: '50 hours', link: '#' },
+                    { platform: 'freeCodeCamp', icon: 'fa-brands fa-free-code-camp', title: 'Frontend Development Libraries Certification', level: 'Beginner', duration: '300 hours', link: '#' }
+                ];
+            } else if (lowerQuery.includes('data') || lowerQuery.includes('python')) {
+                topics = ['Python Fundamentals', 'Pandas & NumPy', 'Data Visualization (Matplotlib/Seaborn)', 'Exploratory Data Analysis', 'Intro to Machine Learning', 'SQL Basics'];
+                courses = [
+                    { platform: 'Coursera', icon: 'fa-solid fa-graduation-cap', title: 'Google Data Analytics Professional Certificate', level: 'Beginner', duration: '6 months', link: '#' },
+                    { platform: 'Udemy', icon: 'fa-solid fa-play', title: 'Python for Data Science and Machine Learning Bootcamp', level: 'Beginner', duration: '25 hours', link: '#' },
+                    { platform: 'edX', icon: 'fa-solid fa-laptop-code', title: 'Data Science Fundamentals with Python and SQL', level: 'Intermediate', duration: '4 months', link: '#' }
+                ];
+            } else if (lowerQuery.includes('design') || lowerQuery.includes('ux')) {
+                topics = ['Design Principles', 'Wireframing & Prototyping', 'Figma Mastery', 'User Research', 'Usability Testing', 'Design Systems'];
+                courses = [
+                    { platform: 'Coursera', icon: 'fa-solid fa-graduation-cap', title: 'Google UX Design Professional Certificate', level: 'Beginner', duration: '6 months', link: '#' },
+                    { platform: 'Udemy', icon: 'fa-solid fa-play', title: 'Complete Web & Mobile Designer in 2024: UI/UX, Figma', level: 'All Levels', duration: '27 hours', link: '#' },
+                    { platform: 'Interaction Design Foundation', icon: 'fa-solid fa-pen-nib', title: 'UI Design Patterns for Successful Software', level: 'Advanced', duration: '8 weeks', link: '#' }
+                ];
+            } else {
+                // Generic fallback
+                topics = ['Fundamentals of ' + query, 'Advanced Concepts', 'Practical Application', 'Tools & Ecosystem', 'Industry Best Practices'];
+                courses = [
+                    { platform: 'Coursera', icon: 'fa-solid fa-graduation-cap', title: `Introduction to ${query}`, level: 'Beginner', duration: '4 weeks', link: '#' },
+                    { platform: 'Udemy', icon: 'fa-solid fa-play', title: `The Complete ${query} Masterclass`, level: 'All Levels', duration: '20 hours', link: '#' },
+                    { platform: 'YouTube', icon: 'fa-brands fa-youtube', title: `${query} Crash Course for Beginners`, level: 'Beginner', duration: '2 hours', link: '#' },
+                    { platform: 'edX', icon: 'fa-solid fa-laptop-code', title: `Professional Certificate in ${query}`, level: 'Intermediate', duration: '3 months', link: '#' }
+                ];
+            }
+
+            // Render Topics
+            const topicsHTML = topics.map(t => `<div class="topic-pill"><i class="fa-solid fa-check-circle"></i> ${t}</div>`).join('');
+            document.getElementById('topicsContainer').innerHTML = topicsHTML;
+
+            // Render Courses
+            const coursesHTML = courses.map(c => `
+                <div class="course-card glassmorphism">
+                    <div class="course-platform">
+                        <i class="${c.icon}"></i> ${c.platform}
+                    </div>
+                    <h3 class="course-title">${c.title}</h3>
+                    <div class="course-meta">
+                        <span><i class="fa-solid fa-layer-group"></i> ${c.level}</span>
+                        <span><i class="fa-regular fa-clock"></i> ${c.duration}</span>
+                    </div>
+                    <button class="btn-gradient-border course-action" onclick="window.open('${c.link}', '_blank')">
+                        View Course <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </button>
+                </div>
+            `).join('');
+            document.getElementById('courseGrid').innerHTML = coursesHTML;
+
+            // Show results
+            document.getElementById('resultsContainer').classList.add('show');
+        }
+    </script>
+</body>
+
+</html>

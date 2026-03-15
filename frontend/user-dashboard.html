@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | User Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            padding: 8rem 5% 4rem;
+            min-height: 100vh;
+        }
+
+        .dash-header {
+            margin-bottom: 3rem;
+        }
+
+        .services-grid .service-card {
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .services-grid a.service-card:hover h3 {
+            color: var(--primary-light);
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='user-dashboard.html'" style="cursor:pointer;">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-solid"
+                onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                Logout <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="dash-header fade-in-up">
+            <span class="badge">Student / Job Seeker</span>
+            <h1 class="main-title">User <span>Dashboard</span></h1>
+            <p class="subtitle">Welcome to your personalized portal. Access your resume analysis, gap analysis,
+                roadmaps, and more.</p>
+        </div>
+
+        <div class="services-grid fade-in-up delay-1">
+            <a href="resume-analysis.html" class="service-card glassmorphism hover-lift">
+                <div class="service-icon-wrapper"><i class="fa-solid fa-file-invoice"></i></div>
+                <h3>Resume Analysis</h3>
+                <p>Paste your resume and get instant metrics, keyword scores, and improvement insights.</p>
+            </a>
+            <a href="gap-analysis.html" class="service-card glassmorphism hover-lift">
+                <div class="service-icon-wrapper"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>Gap Analysis</h3>
+                <p>Enter your skills & target role to visualize skill gaps and get actionable recommendations.</p>
+            </a>
+            <a href="career-roadmaps.html" class="service-card glassmorphism hover-lift">
+                <div class="service-icon-wrapper"><i class="fa-solid fa-road"></i></div>
+                <h3>Career Roadmaps</h3>
+                <p>Select a career goal and get a step-by-step roadmap to achieve it.</p>
+            </a>
+            <a href="courses.html" class="service-card glassmorphism hover-lift">
+                <div class="service-icon-wrapper"><i class="fa-solid fa-book-open"></i></div>
+                <h3>Courses</h3>
+                <p>Enter a topic or course to get a curriculum and study links.</p>
+            </a>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
