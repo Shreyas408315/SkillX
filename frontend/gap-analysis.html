@@ -12,8 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <style>
         .analysis-page {
-            padding: 7rem 5% 4rem;
-            min-height: 100vh;
+            padding: 2rem 5% 4rem;
         }
 
         .page-header {
@@ -477,19 +476,32 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
-    <nav class="navbar scrolled">
-        <div class="logo" onclick="window.location.href='user-dashboard.html'" style="cursor:pointer;">
-            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
-        </div>
-        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
-            <button class="btn-gradient-solid"
-                onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
-                Logout <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
-        </div>
-    </nav>
+    <div class="dashboard-page-container">
+        <!-- Sidebar Navigation -->
+        <aside class="auth-sidebar">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+                <i data-lucide="pie-chart" class="logo-icon" style="color: var(--primary-light);"></i> SkillX
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="user-dashboard.html"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                <li><a href="resume-analysis.html"><i data-lucide="file-text"></i> Resume</a></li>
+                <li><a href="gap-analysis.html" class="active"><i data-lucide="activity"></i> Gap Analysis</a></li>
+                <li><a href="career-roadmaps.html"><i data-lucide="map"></i> Roadmaps</a></li>
+                <li><a href="courses.html"><i data-lucide="book-open"></i> Courses</a></li>
+                <li style="margin-top: auto;"><a href="profile.html"><i data-lucide="user"></i> Profile</a></li>
+            </ul>
+        </aside>
 
-    <main class="analysis-page">
+        <!-- Main Content Area -->
+        <div class="dashboard-content-area">
+            <nav class="dashboard-topbar">
+                <button class="btn-gradient-solid"
+                    onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                    Logout <i data-lucide="log-out"></i>
+                </button>
+            </nav>
+
+            <main class="analysis-page">
         <!-- Header -->
         <div class="page-header fade-in-up">
             <div class="breadcrumb">
@@ -594,7 +606,14 @@
             </div>
         </div>
     </main>
+        </div>
+    </div>
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="script.js"></script>
     <script>
         // ==================================
@@ -623,16 +642,25 @@
         const skillInput = document.getElementById('skillInput');
         const tagContainer = document.getElementById('skillsTagContainer');
 
+        function addCurrentSkill() {
+            const val = skillInput.value.trim();
+            if (val) {
+                const skills = val.split(',').map(s => s.trim()).filter(s => s);
+                skills.forEach(skillName => {
+                    if (!userSkills.find(s => s.name.toLowerCase() === skillName.toLowerCase())) {
+                        userSkills.push({ name: skillName, proficiency: 50 });
+                    }
+                });
+                skillInput.value = '';
+                renderSkillTags();
+                renderSliders();
+            }
+        }
+
         skillInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                const val = skillInput.value.trim();
-                if (val && !userSkills.find(s => s.name.toLowerCase() === val.toLowerCase())) {
-                    userSkills.push({ name: val, proficiency: 50 });
-                    skillInput.value = '';
-                    renderSkillTags();
-                    renderSliders();
-                }
+                addCurrentSkill();
             }
         });
 
@@ -682,7 +710,10 @@
         // ==================
         // Run Gap Analysis
         // ==================
-        function runGapAnalysis() {
+        async function runGapAnalysis() {
+            if (skillInput.value.trim()) {
+                addCurrentSkill();
+            }
             const role = document.getElementById('targetRole').value;
             if (!role) {
                 alert('Please select a target role!');
@@ -697,12 +728,50 @@
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Analyzing...';
             btn.disabled = true;
 
-            setTimeout(() => {
-                const results = computeGap(role);
+            try {
+                const apiRoleMap = {
+                    frontend: 'Frontend Developer',
+                    backend: 'Backend Developer',
+                    fullstack: 'Full Stack Developer',
+                    'data-scientist': 'Data Scientist',
+                    'ml-engineer': 'Machine Learning Engineer',
+                    devops: 'DevOps Engineer'
+                };
+                const response = await SkillXApi.post('/gap/analyze', {
+                    target_role: apiRoleMap[role] || role,
+                    resume_skills: userSkills.map(skill => skill.name),
+                    skill_levels: userSkills.map(skill => ({
+                        name: skill.name,
+                        proficiency: skill.proficiency
+                    }))
+                });
+
+                const comparison = (response.comparison || []).map(item => ({
+                    skill: item.skill,
+                    required: item.required,
+                    current: item.current,
+                    gap: item.gap
+                }));
+                const results = {
+                    comparison,
+                    readiness: response.readiness_score,
+                    gapCount: comparison.filter(item => item.gap > 20).length,
+                    strongCount: comparison.filter(item => item.current >= item.required).length,
+                    totalSkills: comparison.length,
+                    recommendations: (response.recommendations || []).map(item => ({
+                        text: `<strong>${item.title}</strong> - ${item.detail}`,
+                        priority: item.priority || 'medium'
+                    })),
+                    roleKey: role
+                };
+
                 renderGapResults(results);
+            } catch (error) {
+                alert(`Gap analysis failed: ${error.message}`);
+            } finally {
                 btn.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart"></i> Re-Analyze';
                 btn.disabled = false;
-            }, 1200);
+            }
         }
 
         function computeGap(roleKey) {

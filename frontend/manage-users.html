@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | Manage Users</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            padding: 8rem 5% 4rem;
+            min-height: 100vh;
+        }
+
+        .dash-header {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: inherit;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        body.dark-theme .btn-back {
+            border-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        body:not(.dark-theme) .btn-back {
+            border-color: rgba(0,0,0,0.2);
+            color: #333;
+        }
+
+        .dashboard-section {
+            padding: 2.5rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .user-table th, .user-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            white-space: nowrap;
+        }
+        
+        body.dark-theme .user-table th, 
+        body.dark-theme .user-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .user-table th {
+            font-weight: 600;
+            color: var(--text-muted, #777);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .badge-status {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-active { background: rgba(46, 213, 115, 0.15); color: #2ed573; border: 1px solid rgba(46, 213, 115, 0.2); }
+        .badge-pending { background: rgba(243, 156, 18, 0.15); color: #f39c12; border: 1px solid rgba(243, 156, 18, 0.2); }
+
+        .action-btn {
+            background: transparent;
+            border: 1px solid #d85f24;
+            color: #d85f24;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+
+        .action-btn:hover { background: #d85f24; color: white; }
+        
+        .action-btn-outline {
+            border-color: #3498db;
+            color: #3498db;
+        }
+        .action-btn-outline:hover { background: #3498db; color: white; }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d85f24, #ff8a4c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .user-info p { margin: 0; font-size: 0.85rem; color: #777; }
+        .user-info strong { font-size: 1rem; color: inherit; }
+    </style>
+</head>
+
+<body class="light-theme">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-3"></div>
+
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='recruiter-dashboard.html'" style="cursor:pointer;">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-solid" onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                Logout <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="dash-header fade-in-up">
+            <div>
+                <a href="recruiter-dashboard.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                <h1 class="main-title" style="margin-top: 1rem;">Manage <span>Users</span></h1>
+                <p class="subtitle">View and manage all candidates who created an account & uploaded a resume.</p>
+            </div>
+            <div class="search-box" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <input type="text" id="searchInput" placeholder="Search users by name, email..." style="padding: 0.8rem 1.5rem; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: inherit; outline: none; width: 250px; font-family: inherit;">
+                <select id="roleFilter" style="padding: 0.8rem 1.5rem; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: inherit; outline: none; font-family: inherit; cursor: pointer;">
+                    <option value="All" style="color: #333;">All Roles</option>
+                    <option value="Frontend Developer" style="color: #333;">Frontend Developer</option>
+                    <option value="Backend Developer" style="color: #333;">Backend Developer</option>
+                    <option value="UI/UX Designer" style="color: #333;">UI/UX Designer</option>
+                    <option value="Data Scientist" style="color: #333;">Data Scientist</option>
+                    <option value="Other" style="color: #333;">Other Roles</option>
+                </select>
+            </div>
+        </div>
+
+        <section class="dashboard-section fade-in-up delay-1">
+            <div class="table-container">
+                <table class="user-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>User Profile</th>
+                            <th>Role</th>
+                            <th>Resume Status</th>
+                            <th>Registration Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <!-- Dynamic content injected here via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Custom Logic to populate the table with filtering functionality
+        document.addEventListener('DOMContentLoaded', async () => {
+            const tableBody = document.getElementById('userTableBody');
+            const searchInput = document.getElementById('searchInput');
+            const roleFilter = document.getElementById('roleFilter');
+            
+            let users = [];
+            
+            try {
+                // Fetch dynamic users from backend
+                users = await SkillXApi.get('/recruiter/users');
+            } catch (error) {
+                console.error("Failed to fetch users from backend", error);
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #ff4757;">Failed to load users. Backend may be unreachable.</td></tr>';
+                return;
+            }
+
+            // Also keep local logic for newly registered user for continuity
+            const localUserJSON = localStorage.getItem('SkillXRegisteredUser');
+            if (localUserJSON) {
+                const localUser = JSON.parse(localUserJSON);
+                
+                // Add the recently registered user to the top 
+                users.unshift({
+                    name: localUser.name || 'New Candidate',
+                    email: localUser.email || 'user@example.com',
+                    role: localUser.role === 'recruiter' ? 'Recruiter' : 'Frontend Developer', // default to filterable mock role
+                    hasResume: true, // we assume they uploaded a resume per requirement
+                    date: new Date().toISOString().split('T')[0],
+                    match: 75,
+                    status: 'Active'
+                });
+            }
+
+            function renderTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filterRole = roleFilter.value;
+
+                tableBody.innerHTML = ''; // Clear table
+
+                const filteredUsers = users.filter(user => {
+                    const matchesSearch = user.name.toLowerCase().includes(searchTerm) || user.email.toLowerCase().includes(searchTerm);
+                    const matchesRole = filterRole === 'All' || user.role === filterRole;
+                    return matchesSearch && matchesRole;
+                });
+
+                if (filteredUsers.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted, #777);">No users found matching your filters.</td></tr>';
+                    return;
+                }
+
+                filteredUsers.forEach(user => {
+                    const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2);
+                    const resumeBadge = user.hasResume ? '<span class="badge-status badge-active"><i class="fa-solid fa-file-pdf"></i> View Resume</span>' : '<span class="badge-status badge-pending">Missing</span>';
+                    
+                    tableBody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td>
+                                <div class="user-profile">
+                                    <div class="user-avatar">${initials}</div>
+                                    <div class="user-info">
+                                        <strong>${user.name}</strong>
+                                        <p>${user.email}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="color:var(--text-color); font-weight: 500;">${user.role}</td>
+                            <td>${resumeBadge}</td>
+                            <td style="color:var(--text-color);">${user.date}</td>
+                            <td>
+                                <button class="action-btn" onclick="alert('Viewing comprehensive profile data...')"><i class="fa-solid fa-eye"></i> Details</button>
+                                ${user.hasResume ? '<button class="action-btn action-btn-outline" onclick="alert(\\\'Downloading parsed resume data...\\\')"><i class="fa-solid fa-download"></i> Extract</button>' : ''}
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
+            // Bind Event Listeners
+            searchInput.addEventListener('input', renderTable);
+            roleFilter.addEventListener('change', renderTable);
+
+            // Initially render
+            renderTable();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "backend_python_resume",
+    "request": {
+      "resume_text": "Python developer with 3 years of experience building Django REST APIs, PostgreSQL-backed services, and Dockerized deployments. Built an inventory platform and deployed services on AWS. B.Tech in Computer Science."
+    },
+    "expected": {
+      "normalized_role": "Backend Developer",
+      "skills_include": ["python", "django", "rest api", "postgresql", "docker", "aws"],
+      "education_mentions": ["B.Tech", "Computer Science"]
+    }
+  },
+  {
+    "name": "frontend_react_resume",
+    "request": {
+      "resume_text": "Frontend engineer with 2+ years of experience in React, TypeScript, HTML, CSS, and responsive design. Built dashboard interfaces with accessibility improvements and collaborated using Git."
+    },
+    "expected": {
+      "normalized_role": "Frontend Developer",
+      "skills_include": ["react", "typescript", "html", "css", "git"]
+    }
+  }
+]

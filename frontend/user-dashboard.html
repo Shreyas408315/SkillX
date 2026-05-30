@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .dashboard-container {
-            padding: 8rem 5% 4rem;
-            min-height: 100vh;
+            padding: 2rem 5% 4rem;
         }
 
         .dash-header {
@@ -36,19 +35,32 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
-    <nav class="navbar scrolled">
-        <div class="logo" onclick="window.location.href='user-dashboard.html'" style="cursor:pointer;">
-            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
-        </div>
-        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
-            <button class="btn-gradient-solid"
-                onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
-                Logout <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
-        </div>
-    </nav>
+    <div class="dashboard-page-container">
+        <!-- Sidebar Navigation -->
+        <aside class="auth-sidebar">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+                <i data-lucide="pie-chart" class="logo-icon" style="color: var(--primary-light);"></i> SkillX
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="user-dashboard.html" class="active"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                <li><a href="resume-analysis.html"><i data-lucide="file-text"></i> Resume</a></li>
+                <li><a href="gap-analysis.html"><i data-lucide="activity"></i> Gap Analysis</a></li>
+                <li><a href="career-roadmaps.html"><i data-lucide="map"></i> Roadmaps</a></li>
+                <li><a href="courses.html"><i data-lucide="book-open"></i> Courses</a></li>
+                <li style="margin-top: auto;"><a href="profile.html"><i data-lucide="user"></i> Profile</a></li>
+            </ul>
+        </aside>
 
-    <main class="dashboard-container">
+        <!-- Main Content Area -->
+        <div class="dashboard-content-area">
+            <nav class="dashboard-topbar">
+                <button class="btn-gradient-solid"
+                    onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                    Logout <i data-lucide="log-out"></i>
+                </button>
+            </nav>
+
+            <main class="dashboard-container">
         <div class="dash-header fade-in-up">
             <span class="badge">Student / Job Seeker</span>
             <h1 class="main-title">User <span>Dashboard</span></h1>
@@ -58,28 +70,35 @@
 
         <div class="services-grid fade-in-up delay-1">
             <a href="resume-analysis.html" class="service-card glassmorphism hover-lift">
-                <div class="service-icon-wrapper"><i class="fa-solid fa-file-invoice"></i></div>
+                <div class="service-icon-wrapper"><i data-lucide="file-text"></i></div>
                 <h3>Resume Analysis</h3>
                 <p>Paste your resume and get instant metrics, keyword scores, and improvement insights.</p>
             </a>
             <a href="gap-analysis.html" class="service-card glassmorphism hover-lift">
-                <div class="service-icon-wrapper"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="service-icon-wrapper"><i data-lucide="activity"></i></div>
                 <h3>Gap Analysis</h3>
                 <p>Enter your skills & target role to visualize skill gaps and get actionable recommendations.</p>
             </a>
             <a href="career-roadmaps.html" class="service-card glassmorphism hover-lift">
-                <div class="service-icon-wrapper"><i class="fa-solid fa-road"></i></div>
+                <div class="service-icon-wrapper"><i data-lucide="map"></i></div>
                 <h3>Career Roadmaps</h3>
                 <p>Select a career goal and get a step-by-step roadmap to achieve it.</p>
             </a>
             <a href="courses.html" class="service-card glassmorphism hover-lift">
-                <div class="service-icon-wrapper"><i class="fa-solid fa-book-open"></i></div>
+                <div class="service-icon-wrapper"><i data-lucide="book-open"></i></div>
                 <h3>Courses</h3>
                 <p>Enter a topic or course to get a curriculum and study links.</p>
             </a>
         </div>
     </main>
+        </div>
+    </div>
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="script.js"></script>
 </body>
 

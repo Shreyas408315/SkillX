@@ -1,0 +1,21 @@
+John Doe
+Software Engineer
+Email: john.doe@example.com
+
+Summary:
+Software engineer with 5 years of experience developing backend services, APIs, and scalable cloud solutions.
+
+Experience:
+- Backend Engineer, Acme Corp, 2019-2024
+  * Built Python microservices and REST APIs using FastAPI and Django.
+  * Developed ETL pipelines and deployed applications to AWS.
+  * Improved system reliability and performance through monitoring and automation.
+
+Education:
+B.S. in Computer Science, University of Somewhere, 2018
+
+Skills:
+Python, FastAPI, Django, SQL, PostgreSQL, Docker, AWS, Git, REST APIs, unit testing
+
+Certifications:
+AWS Certified Developer – Associate

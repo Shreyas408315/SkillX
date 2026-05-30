@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .roadmap-page {
-            padding: 7rem 5% 4rem;
+            padding: 2rem 5% 4rem;
             min-height: 100vh;
         }
 
@@ -291,19 +291,32 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
-    <nav class="navbar scrolled">
-        <div class="logo" onclick="window.location.href='user-dashboard.html'" style="cursor:pointer;">
-            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
-        </div>
-        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
-            <button class="btn-gradient-solid"
-                onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
-                Logout <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
-        </div>
-    </nav>
+    <div class="dashboard-page-container">
+        <!-- Sidebar Navigation -->
+        <aside class="auth-sidebar">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+                <i data-lucide="pie-chart" class="logo-icon" style="color: var(--primary-light);"></i> SkillX
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="user-dashboard.html"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                <li><a href="resume-analysis.html"><i data-lucide="file-text"></i> Resume</a></li>
+                <li><a href="gap-analysis.html"><i data-lucide="activity"></i> Gap Analysis</a></li>
+                <li><a href="career-roadmaps.html" class="active"><i data-lucide="map"></i> Roadmaps</a></li>
+                <li><a href="courses.html"><i data-lucide="book-open"></i> Courses</a></li>
+                <li style="margin-top: auto;"><a href="profile.html"><i data-lucide="user"></i> Profile</a></li>
+            </ul>
+        </aside>
 
-    <main class="roadmap-page">
+        <!-- Main Content Area -->
+        <div class="dashboard-content-area">
+            <nav class="dashboard-topbar">
+                <button class="btn-gradient-solid"
+                    onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                    Logout <i data-lucide="log-out"></i>
+                </button>
+            </nav>
+
+            <main class="roadmap-page">
         <div class="page-header fade-in-up">
             <div class="breadcrumb">
                 <a href="user-dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
@@ -342,8 +355,15 @@
 
         <!-- Roadmap Display -->
         <div class="roadmap-container" id="roadmapContainer"></div>
-    </main>
+            </main>
+        </div>
+    </div>
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="script.js"></script>
     <script>
         // ==========================================

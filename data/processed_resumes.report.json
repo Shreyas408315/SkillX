@@ -1,0 +1,157 @@
+{
+  "input_file": "c:\\Users\\shrey\\Downloads\\processed_resumes.jsonl",
+  "cleaned_file": "data\\processed_resumes.cleaned.jsonl",
+  "flagged_file": "data\\processed_resumes.flagged.jsonl",
+  "dropped_file": "data\\processed_resumes.dropped.jsonl",
+  "stats": {
+    "input_rows": 4610,
+    "kept_rows": 2457,
+    "flagged_rows": 2,
+    "dropped_rows": 2153
+  },
+  "flag_counts": {
+    "sparse_project_data": 1,
+    "weak_company_placeholder": 1,
+    "summary_title_domain_mismatch": 1
+  },
+  "top_normalized_roles": [
+    [
+      "Data Scientist",
+      73
+    ],
+    [
+      "Python Developer",
+      71
+    ],
+    [
+      "Database Administrator",
+      69
+    ],
+    [
+      "JavaScript Developer",
+      69
+    ],
+    [
+      "iOS Developer",
+      69
+    ],
+    [
+      "Backend Developer",
+      66
+    ],
+    [
+      "Infrastructure Engineer",
+      65
+    ],
+    [
+      "NLP Engineer",
+      64
+    ],
+    [
+      "Android Developer",
+      64
+    ],
+    [
+      "Flutter Developer",
+      64
+    ],
+    [
+      "Platform Engineer",
+      64
+    ],
+    [
+      "SQL Developer",
+      64
+    ],
+    [
+      "Blockchain Developer",
+      64
+    ],
+    [
+      "Qa Engineer",
+      64
+    ],
+    [
+      "Technical Architect",
+      64
+    ],
+    [
+      "Data Engineer",
+      63
+    ],
+    [
+      "DevOps Engineer",
+      62
+    ],
+    [
+      "React Native Developer",
+      62
+    ],
+    [
+      "NoSQL Developer",
+      62
+    ],
+    [
+      "Solutions Architect",
+      62
+    ],
+    [
+      "Full Stack Developer",
+      60
+    ],
+    [
+      "Web Developer",
+      60
+    ],
+    [
+      "Systems Engineer",
+      60
+    ],
+    [
+      "Java Developer",
+      59
+    ],
+    [
+      "Deep Learning Engineer",
+      59
+    ],
+    [
+      "Mobile Developer",
+      59
+    ],
+    [
+      "Kubernetes Engineer",
+      59
+    ],
+    [
+      "Cloud Engineer",
+      58
+    ],
+    [
+      "Information Security Analyst",
+      58
+    ],
+    [
+      "Penetration Tester",
+      58
+    ]
+  ],
+  "non_skill_tokens_removed": [
+    "",
+    "12 months",
+    "24 months",
+    "advanced",
+    "beginner",
+    "bilingual",
+    "english",
+    "expert",
+    "fluent",
+    "hindi",
+    "intermediate",
+    "less than 1 year",
+    "marathi",
+    "native",
+    "punjabi",
+    "tulu"
+  ]
+}

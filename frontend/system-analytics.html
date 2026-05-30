@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | System Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            padding: 8rem 5% 4rem;
+            min-height: 100vh;
+        }
+
+        .dash-header {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: inherit;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        body:not(.dark-theme) .btn-back {
+            border-color: rgba(0,0,0,0.2);
+            color: #333;
+        }
+        
+        body.dark-theme .btn-back {
+            border-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            padding: 2rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover { transform: translateY(-5px); }
+
+        .stat-card .icon-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-muted, #777);
+            font-size: 1.1rem;
+        }
+
+        .stat-card .icon-header i {
+            font-size: 2rem;
+            color: #d85f24;
+        }
+
+        .stat-card .value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-color, #222);
+            line-height: 1;
+        }
+        
+        body.dark-theme .stat-card .value {
+            color: #fff;
+        }
+
+        .trend.up { color: #2ed573; font-weight: 500; font-size: 0.9rem;}
+        .trend.down { color: #ff4757; font-weight: 500; font-size: 0.9rem;}
+        
+        .charts-area {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .chart-box {
+            padding: 2.5rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            min-height: 300px;
+        }
+        
+        .chart-box h3 {
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            font-size: 1.4rem;
+        }
+        
+        body.dark-theme .chart-box h3 {
+            color: white;
+        }
+        
+        /* Bar chart mockup */
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 1.5rem;
+            height: 250px;
+            padding-bottom: 2rem;
+            border-bottom: 1px dashed rgba(255,255,255,0.2);
+        }
+        
+        .bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+        }
+        
+        .bar {
+            width: 100%;
+            background: linear-gradient(to top, #d85f24, #ffb088);
+            border-radius: 8px 8px 0 0;
+            transition: height 1s ease-out;
+            min-height: 10px;
+            box-shadow: 0 0 15px rgba(216, 95, 36, 0.4);
+        }
+        
+        .bar-label {
+            font-size: 0.9rem;
+            color: var(--text-muted, #777);
+            font-weight: 500;
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        
+        body.dark-theme .bar-value {
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-3"></div>
+
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='recruiter-dashboard.html'" style="cursor:pointer;">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-solid" onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                Logout <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="dash-header fade-in-up">
+            <div>
+                <a href="recruiter-dashboard.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                <h1 class="main-title" style="margin-top: 1rem;">System <span>Analytics</span></h1>
+                <p class="subtitle">Real-time metrics and overall platform hiring conversion rates.</p>
+            </div>
+            <div>
+                <button class="btn-gradient-solid" style="padding: 0.8rem 1.5rem;"><i class="fa-solid fa-file-export"></i> Export PDF</button>
+            </div>
+        </div>
+
+        <section class="fade-in-up delay-1">
+            <div class="stats-grid" id="statsGrid">
+                <!-- Dynamic Content -->
+            </div>
+            
+            <div class="charts-area">
+                <div class="chart-box">
+                    <h3>Candidate Activity (Last 6 Months)</h3>
+                    <div class="bars" id="activityBars">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+                
+                <div class="chart-box">
+                    <h3>Top Skills in Demand</h3>
+                    <div style="display:flex; flex-direction:column; gap: 1.5rem; margin-top: 2rem;" id="topSkillsBars">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const analytics = await SkillXApi.get('/recruiter/analytics');
+                
+                // 1. Populate Stats Grid
+                const statsGrid = document.getElementById('statsGrid');
+                const statKeys = Object.keys(analytics.summary);
+                const statTitles = ["Total Registered Users", "Resumes Extracted", "Successful Matches", "Avg. Match Rate"];
+                const statIcons = ["fa-users", "fa-file-invoice", "fa-handshake", "fa-bullseye"];
+                
+                statsGrid.innerHTML = statKeys.map((key, i) => {
+                    const data = analytics.summary[key];
+                    const trendClass = data.isUp ? 'up' : 'down';
+                    const trendIcon = data.isUp ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
+                    return `
+                    <div class="stat-card">
+                        <div class="icon-header">
+                            <span>${statTitles[i]}</span>
+                            <i class="fa-solid ${statIcons[i]}"></i>
+                        </div>
+                        <div class="value">${data.value}</div>
+                        <div class="trend ${trendClass}"><i class="fa-solid ${trendIcon}"></i> ${data.trend}</div>
+                    </div>
+                    `;
+                }).join('');
+
+                // 2. Populate Activity Bars
+                const activityBars = document.getElementById('activityBars');
+                activityBars.innerHTML = analytics.candidateActivity.map(item => `
+                    <div class="bar-group">
+                        <div class="bar-value">${item.value}</div>
+                        <div class="bar" style="height: ${item.height};"></div>
+                        <span class="bar-label">${item.month}</span>
+                    </div>
+                `).join('');
+
+                // 3. Populate Top Skills
+                const topSkillsBars = document.getElementById('topSkillsBars');
+                topSkillsBars.innerHTML = analytics.topSkills.map(skill => `
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size: 1rem; margin-bottom: 0.5rem; font-weight:500; color:var(--text-color);">
+                            <span>${skill.name}</span> <span>${skill.percentage}</span>
+                        </div>
+                        <div style="height: 10px; background: rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+                            <div style="height: 100%; width: ${skill.width}; background: linear-gradient(90deg, ${skill.colors[0]}, ${skill.colors[1]}); border-radius: 5px;"></div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                console.error("Failed to load analytics", err);
+                document.getElementById('statsGrid').innerHTML = '<div style="color: #ff4757; padding: 2rem;">Failed to load analytics from server.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

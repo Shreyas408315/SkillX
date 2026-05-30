@@ -1,0 +1,24 @@
+[
+  {
+    "name": "backend_match_good",
+    "request": {
+      "resume_text": "Python developer with Django, REST API, PostgreSQL, Docker, and AWS experience. Built production APIs and maintained backend systems for 3 years.",
+      "job_description": "Backend engineer requiring Python, Django, REST APIs, PostgreSQL, Docker, and AWS."
+    },
+    "expected": {
+      "min_match_score": 70,
+      "matched_skills_include": ["python", "django", "postgresql", "docker", "aws"]
+    }
+  },
+  {
+    "name": "backend_match_partial",
+    "request": {
+      "resume_text": "Python developer with Django and REST API experience, plus SQL and Git.",
+      "job_description": "Backend engineer requiring Python, Docker, AWS, PostgreSQL, and system design."
+    },
+    "expected": {
+      "min_match_score": 40,
+      "missing_skills_include": ["docker", "aws", "postgresql"]
+    }
+  }
+]

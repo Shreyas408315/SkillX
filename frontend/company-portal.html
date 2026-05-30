@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillX | Company Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            padding: 8rem 5% 4rem;
+            min-height: 100vh;
+        }
+
+        .dash-header {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: inherit;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover { background: rgba(255,255,255,0.1); }
+        body.dark-theme .btn-back { border-color: rgba(255,255,255,0.2); color: white; }
+        body:not(.dark-theme) .btn-back { border-color: rgba(0,0,0,0.2); color: #333; }
+
+        .dashboard-section {
+            padding: 2.5rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        /* Jobs Grid using glassmorphism properties from design system */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .job-card {
+            padding: 1.8rem;
+            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .job-card:hover { 
+            transform: translateY(-5px); 
+            border-color: rgba(216, 95, 36, 0.4);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .job-title {
+            font-size: 1.3rem;
+            color: var(--text-color, #222);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        body.dark-theme .job-title { color: white; }
+        
+        .company-name {
+            font-size: 0.95rem;
+            color: var(--text-muted, #777);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .job-tag {
+            background: rgba(216, 95, 36, 0.1);
+            color: #d85f24;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .job-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .action-bars {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: #d85f24;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(216, 95, 36, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(216, 95, 36, 0.4);
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-3"></div>
+
+    <nav class="navbar scrolled">
+        <div class="logo" onclick="window.location.href='recruiter-dashboard.html'" style="cursor:pointer;">
+            <i class="fa-solid fa-chart-pie logo-icon"></i> SkillX
+        </div>
+        <div class="nav-action" style="display: flex; align-items: center; gap: 1rem;">
+            <button class="btn-gradient-solid" onclick="localStorage.removeItem('SkillXUser'); window.location.href='index.html'">
+                Logout <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="dash-header fade-in-up">
+            <div>
+                <a href="recruiter-dashboard.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                <h1 class="main-title" style="margin-top: 1rem;">Company <span>Portal</span></h1>
+                <p class="subtitle">Publish new roles and manage your active job descriptions.</p>
+            </div>
+            <div>
+                <button class="btn-primary" onclick="alert('Opening Job Listing Form...')"><i class="fa-solid fa-plus"></i> Post New Job</button>
+            </div>
+        </div>
+
+        <section class="dashboard-section fade-in-up delay-1">
+            <div class="action-bars" style="margin-bottom: 2rem;">
+                <h2 style="color: var(--text-color);"><i class="fa-solid fa-briefcase" style="color: #d85f24; margin-right:0.5rem;"></i> Active Postings</h2>
+                <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                    <Filter class="fa-solid fa-filter" style="margin: 0 0.5rem;"></Filter>
+                    <select style="background: transparent; border: none; color: inherit; outline: none;">
+                        <option value="All" style="color: #333;">Show All</option>
+                        <option value="Engineering" style="color: #333;">Engineering</option>
+                        <option value="Design" style="color: #333;">Design</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="jobs-grid" id="jobsGrid">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const jobsGrid = document.getElementById('jobsGrid');
+            try {
+                const jobs = await SkillXApi.get('/recruiter/jobs');
+                
+                if (jobs.length === 0) {
+                    jobsGrid.innerHTML = '<div style="color: var(--text-muted, #777); padding: 2rem;">No active job postings found.</div>';
+                    return;
+                }
+
+                jobsGrid.innerHTML = jobs.map(job => {
+                    const customTagStyle = job.tagColors ? `style="background: ${job.tagColors.background}; color: ${job.tagColors.color};"` : '';
+                    const tagsHtml = job.tags.map(tag => `<span class="job-tag" ${customTagStyle}>${tag}</span>`).join('');
+                    
+                    return `
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">${job.title}</div>
+                                <div class="company-name"><i class="fa-solid fa-building"></i> ${job.company}</div>
+                            </div>
+                            <button style="background:transparent; border:none; color: #d85f24; cursor:pointer;" title="Edit Posting"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                        <div class="job-tags">
+                            ${tagsHtml}
+                        </div>
+                        <div class="job-stats">
+                            <span><i class="fa-solid fa-users" style="color: #3498db;"></i> ${job.candidatesCount} Candidates</span>
+                            <span><i class="fa-solid fa-clock" style="color: #e67e22;"></i> Posted ${job.postedAgo}</span>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error("Failed to fetch jobs", err);
+                jobsGrid.innerHTML = '<div style="color: #ff4757; padding: 2rem;">Failed to load job postings from backend.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

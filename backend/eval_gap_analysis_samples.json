@@ -1,0 +1,35 @@
+[
+  {
+    "name": "backend_gap_analysis",
+    "request": {
+      "target_role": "Backend Developer",
+      "resume_skills": ["Python", "Django", "SQL", "Git"],
+      "skill_levels": [
+        { "name": "Python", "proficiency": 85 },
+        { "name": "Django", "proficiency": 75 },
+        { "name": "SQL", "proficiency": 70 },
+        { "name": "Git", "proficiency": 80 }
+      ]
+    },
+    "expected": {
+      "readiness_min": 45,
+      "missing_skills_include": ["docker", "node.js", "rest api"]
+    }
+  },
+  {
+    "name": "devops_gap_analysis",
+    "request": {
+      "target_role": "DevOps Engineer",
+      "resume_skills": ["Docker", "AWS", "Linux", "Git"],
+      "skill_levels": [
+        { "name": "Docker", "proficiency": 80 },
+        { "name": "AWS", "proficiency": 70 },
+        { "name": "Linux", "proficiency": 75 },
+        { "name": "Git", "proficiency": 85 }
+      ]
+    },
+    "expected": {
+      "missing_skills_include": ["kubernetes", "ci/cd"]
+    }
+  }
+]

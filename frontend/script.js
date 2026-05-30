@@ -82,8 +82,8 @@ function switchTab(role) {
     console.log(`Switched to ${role} login`);
 }
 
-// Handle Login Submission (No backend — any email can login)
-function handleLogin(e) {
+// Handle Login Submission
+async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -91,27 +91,27 @@ function handleLogin(e) {
     const btn = document.querySelector('#loginForm button[type="submit"]');
     const originalText = btn.innerHTML;
 
-    // Set Loading state
     btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
     btn.disabled = true;
 
-    // Simulate a short delay for UX
-    setTimeout(() => {
-        // Store user info in localStorage
-        const user = {
+    try {
+        const user = await SkillXApi.post('/auth/login', {
             email: email,
-            role: activeRole,
-            loggedIn: true
-        };
+            password: password
+        });
+
         localStorage.setItem('SkillXUser', JSON.stringify(user));
 
-        // Redirect based on selected role
-        if (activeRole === 'recruiter') {
+        if (user.role === 'recruiter') {
             window.location.href = 'recruiter-dashboard.html';
         } else {
             window.location.href = 'user-dashboard.html';
         }
-    }, 800);
+    } catch (error) {
+        alert(error.message || 'Login failed. Please check your credentials.');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
 }
 
 // Smooth scroll to login when CTA is clicked
@@ -172,8 +172,8 @@ function pullLamp() {
     }, 250);
 }
 
-// Handle Registration Submission (No backend — any email can register)
-function handleRegister(e) {
+// Handle Registration Submission
+async function handleRegister(e) {
     e.preventDefault();
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
@@ -182,23 +182,24 @@ function handleRegister(e) {
     const btn = document.querySelector('#registerForm button[type="submit"]');
     const originalText = btn.innerHTML;
 
-    // Set Loading state
     btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating Account...';
     btn.disabled = true;
 
-    // Simulate a short delay for UX
-    setTimeout(() => {
-        // Store registered user info in localStorage
-        const user = {
+    try {
+        const user = await SkillXApi.post('/auth/register', {
             name: name,
             email: email,
+            password: password,
             role: activeRole
-        };
-        localStorage.setItem('SkillXRegisteredUser', JSON.stringify(user));
+        });
 
         alert('Account created successfully! Please log in.');
         window.location.href = 'login.html';
-    }, 800);
+    } catch (error) {
+        alert(error.message || 'Registration failed.');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
 }
 
 // Login Card 3D Tilt Effect
@@ -224,3 +225,64 @@ if (authCard) {
         authCard.style.transition = 'transform 0.5s ease-out';
     });
 }
+
+// ===============================
+// API Helpers
+// ===============================
+const SKILLX_API_BASE =
+    localStorage.getItem('SkillXApiBase') ||
+    window.SKILLX_API_BASE ||
+    'http://127.0.0.1:8000/api';
+
+async function skillxPost(path, payload) {
+    const response = await fetch(`${SKILLX_API_BASE}${path}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+
+    let data = null;
+    try {
+        data = await response.json();
+    } catch (error) {
+        data = null;
+    }
+
+    if (!response.ok) {
+        const detail = data?.detail || data?.message || `Request failed with status ${response.status}`;
+        throw new Error(detail);
+    }
+
+    return data;
+}
+
+async function skillxGet(path) {
+    const response = await fetch(`${SKILLX_API_BASE}${path}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    let data = null;
+    try {
+        data = await response.json();
+    } catch (error) {
+        data = null;
+    }
+
+    if (!response.ok) {
+        const detail = data?.detail || data?.message || `Request failed with status ${response.status}`;
+        throw new Error(detail);
+    }
+
+    return data;
+}
+
+window.SkillXApi = {
+    baseUrl: SKILLX_API_BASE,
+    post: skillxPost,
+    get: skillxGet
+};
